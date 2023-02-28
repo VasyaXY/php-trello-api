@@ -1,8 +1,8 @@
 {
-	"name": "matteocacciola/php-trello-api",
+	"name": "vasyaxy/php-trello-api",
 	"type": "library",
 	"description": "Trello API v2 client",
-	"homepage": "https://github.com/matteocacciola/php-trello-api",
+	"homepage": "https://github.com/vasyaxy/php-trello-api",
 	"keywords": ["trello"],
 	"license": "MIT",
 	"authors": [
@@ -16,11 +16,12 @@
 		}
 	],
 	"require": {
-		"php": ">=7.4",
-		"guzzlehttp/guzzle": "~5.3"
+		"php": ">=8.0",
+		"symfony/event-dispatcher": "*",
+		"guzzlehttp/guzzle": "*"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^4.8"
+		"phpunit/phpunit": "*"
 	},
 	"suggest": {
 		"symfony/http-foundation": "Needed for the Trello webhook service"

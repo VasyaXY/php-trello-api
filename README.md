@@ -1,11 +1,6 @@
 PHP Trello API v2 client
 ========================
 
-[![Build Status](https://img.shields.io/travis/cdaguerre/php-trello-api.svg?branch=master&style=flat-square)](https://travis-ci.org/cdaguerre/php-trello-api) 
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/cdaguerre/php-trello-api/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/cdaguerre/php-trello-api/?branch=master)
-[![Code Quality](https://img.shields.io/scrutinizer/g/cdaguerre/php-trello-api.svg?style=flat-square)](https://scrutinizer-ci.com/g/cdaguerre/php-trello-api/)
-[![Packagist](https://img.shields.io/packagist/dt/cdaguerre/php-trello-api.svg?style=flat-square)](https://packagist.org/packages/cdaguerre/php-trello-api)
-
 A simple Object Oriented wrapper for the Trello API, written in PHP7.4.
 
 Uses [Trello API v1](https://trello.com/docs/index.html). The object API is very similar to the RESTful API.
@@ -15,11 +10,11 @@ Uses [Trello API v1](https://trello.com/docs/index.html). The object API is very
 * Follows PSR-0 conventions and coding standards: autoload friendly
 * Light and fast thanks to lazy loading of API classes
 * Extensively tested
-* Ready for Symfony 5
+* Ready for Symfony 6
 
 ## Requirements
 
-* PHP >= 7.4 with [cURL](http://php.net/manual/en/book.curl.php) extension,
+* PHP >= 8.0 with [cURL](http://php.net/manual/en/book.curl.php) extension,
 * [Guzzle](https://github.com/guzzle/guzzle) library,
 * (optional) [PHPUnit](https://phpunit.de) to run tests.
 
@@ -28,7 +23,7 @@ Uses [Trello API v1](https://trello.com/docs/index.html). The object API is very
 The recommended way is using [composer](http://getcomposer.org):
 
 ```bash
-$ composer require matteocacciola/php-trello-api
+$ composer require vasyaxy/php-trello-api
 ```
 However, `php-trello-api` follows the PSR-0 naming conventions, which means you can easily integrate `php-trello-api` class loading in your own autoloader.
 
@@ -70,7 +65,7 @@ $card
 
 The service uses the [Symfony EventDispatcher](https://github.com/symfony/EventDispatcher) component to dispatch events occuring on incoming webhooks.
 
-Take a look at the [Events](https://github.com/cdaguerre/php-trello-api/blob/master/lib/Trello/Events.php) class constants for names and associated event classes.
+Take a look at the [Events](https://github.com/vasyaxy/php-trello-api/blob/master/lib/Trello/Events.php) class constants for names and associated event classes.
 
 ```php
 use Trello\Client;
@@ -108,6 +103,6 @@ Feel free to make any comments, file issues or make pull requests.
 
 ## Credits
 
-- Forked by [cdaguerre/php-trello-api](https://github.com/cdaguerre/php-trello-api)
+- Forked by [vasyaxy/php-trello-api](https://github.com/vasyaxy/php-trello-api)
 - Largely inspired by the excellent [php-github-api](https://github.com/KnpLabs/php-github-api) developed by the guys at [KnpLabs](http://knplabs.fr)
 - Thanks to Trello for the API and documentation.

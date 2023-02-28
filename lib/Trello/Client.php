@@ -61,11 +61,12 @@ class Client implements ClientInterface
      */
     private $options = [
         'base_url' => 'https://api.trello.com/',
-        'user_agent' => 'php-trello-api (http://github.com/cdaguerre/php-trello-api)',
+        'user_agent' => 'php-trello-api',
         'timeout' => 10,
         'api_limit' => 5000,
         'api_version' => 1,
         'cache_dir' => null,
+        'http_errors' => false,
     ];
 
     /**
@@ -153,7 +154,7 @@ class Client implements ClientInterface
      *
      * @throws InvalidArgumentException If no authentication method was given
      */
-    public function authenticate($tokenOrLogin, $password = null, $authMethod = null)
+    public function authenticate($tokenOrLogin, $password = null, $authMethod = null): void
     {
         if (null === $password && null === $authMethod) {
             throw new InvalidArgumentException('You need to specify authentication method!');
@@ -182,7 +183,7 @@ class Client implements ClientInterface
      *
      * @return HttpClient
      */
-    public function getHttpClient()
+    public function getHttpClient(): HttpClient
     {
         if (null === $this->httpClient) {
             $this->httpClient = new HttpClient($this->options);
@@ -196,17 +197,19 @@ class Client implements ClientInterface
      *
      * @param HttpClientInterface $httpClient
      */
-    public function setHttpClient(HttpClientInterface $httpClient)
+    public function setHttpClient(HttpClientInterface $httpClient): self
     {
         $this->httpClient = $httpClient;
+        return $this;
     }
 
     /**
      * Clears used headers
      */
-    public function clearHeaders()
+    public function clearHeaders(): self
     {
         $this->getHttpClient()->clearHeaders();
+        return $this;
     }
 
     /**
@@ -214,9 +217,10 @@ class Client implements ClientInterface
      *
      * @param array $headers
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): self
     {
         $this->getHttpClient()->setHeaders($headers);
+        return $this;
     }
 
     /**
@@ -246,7 +250,7 @@ class Client implements ClientInterface
      * @throws InvalidArgumentException if the option is not defined
      * @throws InvalidArgumentException if the api version is set to an unsupported one
      */
-    public function setOption($name, $value)
+    public function setOption($name, $value): self
     {
         if (!array_key_exists($name, $this->options)) {
             throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
@@ -257,6 +261,7 @@ class Client implements ClientInterface
         }
 
         $this->options[$name] = $value;
+        return $this;
     }
 
     /**
