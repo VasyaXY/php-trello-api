@@ -37,6 +37,21 @@ class Items extends AbstractApi
     }
 
     /**
+     * Get an item in the given checklist
+     * @link https://developer.atlassian.com/cloud/trello/rest/api-group-checklists/#api-checklists-id-checkitems-idcheckitem-get
+     *
+     * @param string $id the id of a given checklist
+     * @param string $itemId the card's id or short link
+     * @param array $params optional parameters
+     *
+     * @return array
+     */
+    public function getItem($id, $itemId, array $params = [])
+    {
+        return $this->get($this->getPath($id).'/'.$itemId, $params);
+    }
+
+    /**
      * Create an item in the given checklist
      * @link https://trello.com/docs/api/checklist/#post-1-checklists-idchecklist-checkitems
      *
@@ -70,8 +85,17 @@ class Items extends AbstractApi
      * @return array
      */
     public function update($id, $itemId, array $data)
-    {
-        $this->validateRequiredParameters(['name', 'state'], $data);
+    {	
+		$item = $this->getItem($id, $itemId);
+		if(!isset($data['pos'])) {
+			$data['pos'] = $item['pos'];
+		}
+		if(!isset($data['name']) || $data['name'] == '') {
+			$data['name'] = $item['name'];
+		}
+		if(!isset($data['state'])) {
+			$data['state'] = $item['state'] == 'complete' ? true : false;
+		}
 
         $this->remove($id, $itemId);
 

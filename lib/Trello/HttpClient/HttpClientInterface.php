@@ -67,14 +67,14 @@ interface HttpClientInterface
      * Send a request to the server, receive a response,
      * decode the response and returns an associative array
      *
-     * @param string $path Request path
-     * @param mixed $body Request body
      * @param string $httpMethod HTTP method to use
+     * @param string $path Request path
      * @param array $headers Request headers
+     * @param array $options Request options
      *
      * @return Response
      */
-    public function request($path, $body, $httpMethod = 'GET', array $headers = []);
+    public function request($httpMethod = 'GET', $path = '', array $headers = [], array $options = []);
 
     /**
      * Change an option value.

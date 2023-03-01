@@ -218,6 +218,16 @@ class Member extends AbstractApi
     }
 
     /**
+     * Cards API
+     *
+     * @return Member\Cards
+     */
+    public function webhooks()
+    {
+        return new Member\Webhooks($this->client);
+    }
+
+    /**
      * Notifications API
      *
      * @return Member\Notifications

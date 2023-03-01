@@ -2,16 +2,6 @@
 
 namespace Trello;
 
-use Trello\Model\ActionInterface;
-use Trello\Model\Board;
-use Trello\Model\Card;
-use Trello\Model\CardInterface;
-use Trello\Model\ChecklistInterface;
-use Trello\Model\MemberInterface;
-use Trello\Model\OrganizationInterface;
-use Trello\Model\TokenInterface;
-use Trello\Model\WebhookInterface;
-
 class Manager
 {
     /**
@@ -36,7 +26,7 @@ class Manager
      *
      * @return Model\OrganizationInterface
      */
-    public function getOrganization($id = null): OrganizationInterface
+    public function getOrganization($id = null)
     {
         return new Model\Organization($this->client, $id);
     }
@@ -48,7 +38,7 @@ class Manager
      *
      * @return Model\BoardInterface
      */
-    public function getBoard($id = null): Board
+    public function getBoard($id = null)
     {
         return new Model\Board($this->client, $id);
     }
@@ -60,7 +50,7 @@ class Manager
      *
      * @return Model\CardlistInterface
      */
-    public function getList($id = null): CardInterface
+    public function getList($id = null)
     {
         return new Model\Cardlist($this->client, $id);
     }
@@ -72,7 +62,7 @@ class Manager
      *
      * @return Model\CardInterface
      */
-    public function getCard($id = null): Card
+    public function getCard($id = null)
     {
         return new Model\Card($this->client, $id);
     }
@@ -84,7 +74,7 @@ class Manager
      *
      * @return Model\ChecklistInterface
      */
-    public function getChecklist($id = null): ChecklistInterface
+    public function getChecklist($id = null)
     {
         return new Model\Checklist($this->client, $id);
     }
@@ -96,7 +86,7 @@ class Manager
      *
      * @return Model\MemberInterface
      */
-    public function getMember($id = null): MemberInterface
+    public function getMember($id = null)
     {
         return new Model\Member($this->client, $id);
     }
@@ -108,7 +98,7 @@ class Manager
      *
      * @return Model\ActionInterface
      */
-    public function getAction($id): ActionInterface
+    public function getAction($id)
     {
         return new Model\Action($this->client, $id);
     }
@@ -120,7 +110,7 @@ class Manager
      *
      * @return Model\TokenInterface
      */
-    public function getToken($id): TokenInterface
+    public function getToken($id)
     {
         return new Model\Token($this->client, $id);
     }
@@ -132,7 +122,7 @@ class Manager
      *
      * @return Model\WebhookInterface
      */
-    public function getWebhook($id): WebhookInterface
+    public function getWebhook($id)
     {
         return new Model\Webhook($this->client, $id);
     }

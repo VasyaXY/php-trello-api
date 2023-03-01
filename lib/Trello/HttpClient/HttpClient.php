@@ -4,21 +4,19 @@ namespace Trello\HttpClient;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Message\Request;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\RequestOptions;
 use Trello\Exception\ErrorException;
 use Trello\Exception\RuntimeException;
-use Trello\HttpClient\Listener\AuthListener;
-use Trello\HttpClient\Listener\ErrorListener;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class HttpClient implements HttpClientInterface
 {
+    protected const API_VERSION = 1;
+
     protected $options = [
-        'base_url' => 'https://api.trello.com/',
-        'user_agent' => 'php-trello-api (http://github.com/vasyaxy/php-trello-api)',
-        'timeout' => 10,
-        'api_version' => 1,
+        'base_uri' => 'https://api.trello.com/' . self::API_VERSION . '/',
+        RequestOptions::HTTP_ERRORS => false,
+        RequestOptions::TIMEOUT => 10,
     ];
 
     /**
@@ -28,20 +26,24 @@ class HttpClient implements HttpClientInterface
 
     protected $headers = [];
 
-    private $lastResponse;
-    private $lastRequest;
+    /**
+     * @var \GuzzleHttp\HandlerStack
+     */
+    protected $handlerStack;
 
     /**
      * @param array $options
-     * @param ClientInterface $client
+     * @param \GuzzleHttp\ClientInterface|null $client
      */
     public function __construct(array $options = [], ClientInterface $client = null)
     {
         $this->options = array_merge($this->options, $options);
-        $client = $client ?: new GuzzleClient($this->options);
-        $this->client = $client;
 
-        $this->addListener('request.error', [new ErrorListener(), 'onRequestError']);
+        $this->handlerStack = HandlerStack::create();
+        $this->handlerStack->push(Middleware::error(), 'trello_error');
+
+        $this->client = $client ?: new GuzzleClient(['handler' => $this->handlerStack]);
+
         $this->clearHeaders();
     }
 
@@ -67,23 +69,18 @@ class HttpClient implements HttpClientInterface
     public function clearHeaders()
     {
         $this->headers = [
-            'Accept' => sprintf('application/vnd.orcid.%s+json', $this->options['api_version']),
-            'User-Agent' => sprintf('%s', $this->options['user_agent']),
+            'Accept' => sprintf('application/vnd.orcid.%s+json', self::API_VERSION),
         ];
     }
 
     /**
-     * @param string $eventName
-     * @param callable $listener
+     * Build a handler stack.
+     *
+     * @return \GuzzleHttp\HandlerStack
      */
-    public function addListener($eventName, $listener)
+    public function getHandlerStack()
     {
-        $this->client->getEmitter()->on($eventName, $listener);
-    }
-
-    public function addSubscriber(EventSubscriberInterface $subscriber)
-    {
-        $this->client->getEmitter()->attach($subscriber);
+        return $this->handlerStack;
     }
 
     /**
@@ -91,7 +88,9 @@ class HttpClient implements HttpClientInterface
      */
     public function get($path, array $parameters = [], array $headers = [])
     {
-        return $this->request($path, $parameters, 'GET', $headers);
+        return $this->request('GET', $path, $headers, [
+            RequestOptions::QUERY => $parameters,
+        ]);
     }
 
     /**
@@ -99,11 +98,9 @@ class HttpClient implements HttpClientInterface
      */
     public function post($path, $body = null, array $headers = [])
     {
-        if (!isset($headers['Content-Type'])) {
-            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        }
-
-        return $this->request($path, $body, 'POST', $headers);
+        return $this->request('POST', $path, $headers, [
+            RequestOptions::FORM_PARAMS => $body,
+        ]);
     }
 
     /**
@@ -111,11 +108,9 @@ class HttpClient implements HttpClientInterface
      */
     public function patch($path, $body = null, array $headers = [])
     {
-        if (!isset($headers['Content-Type'])) {
-            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        }
-
-        return $this->request($path, $body, 'PATCH', $headers);
+        return $this->request('PATCH', $path, $headers, [
+            RequestOptions::FORM_PARAMS => $body,
+        ]);
     }
 
     /**
@@ -123,7 +118,9 @@ class HttpClient implements HttpClientInterface
      */
     public function delete($path, $body = null, array $headers = [])
     {
-        return $this->request($path, $body, 'DELETE', $headers);
+        return $this->request('DELETE', $path, $headers, [
+            RequestOptions::FORM_PARAMS => $body,
+        ]);
     }
 
     /**
@@ -131,30 +128,26 @@ class HttpClient implements HttpClientInterface
      */
     public function put($path, $body, array $headers = [])
     {
-        if (!isset($headers['Content-Type'])) {
-            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        }
-
-        return $this->request($path, $body, 'PUT', $headers);
+        return $this->request('PUT', $path, $headers, [
+            RequestOptions::FORM_PARAMS => $body,
+        ]);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function request($path, $body = null, $httpMethod = 'GET', array $headers = [], array $options = [])
+    public function request($httpMethod = 'GET', $path = '', array $headers = [], array $options = [])
     {
-        $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
+        $options['headers'] = array_merge($this->headers, $headers);
+        $options = array_merge($this->options, $options);
 
         try {
-            $response = $this->client->send($request);
+            $response = $this->client->request($httpMethod, $path, $options);
         } catch (\LogicException $e) {
             throw new ErrorException($e->getMessage(), $e->getCode(), $e);
         } catch (\RuntimeException $e) {
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
-
-        $this->lastRequest = $request;
-        $this->lastResponse = $response;
 
         return $response;
     }
@@ -162,48 +155,8 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function authenticate($tokenOrLogin, $password, $method)
+    public function authenticate($tokenOrLogin, $password, $authMethod)
     {
-        $this->addListener('request.before_send', [
-            new AuthListener($tokenOrLogin, $password, $method),
-            'onRequestBeforeSend',
-        ]);
-    }
-
-    /**
-     * @return Request
-     */
-    public function getLastRequest()
-    {
-        return $this->lastRequest;
-    }
-
-    /**
-     * @return Response
-     */
-    public function getLastResponse()
-    {
-        return $this->lastResponse;
-    }
-
-    /**
-     * @param string $httpMethod
-     * @param string $path
-     *
-     * @return Request|\GuzzleHttp\Message\RequestInterface
-     */
-    protected function createRequest($httpMethod, $path, $body = null, array $headers = [], array $options = [])
-    {
-        $path = $this->options['api_version'] . '/' . $path;
-
-        if ($httpMethod === 'GET' && $body) {
-            $path .= (false === strpos($path, '?') ? '?' : '&');
-            $path .= utf8_encode(http_build_query($body, '', '&'));
-        }
-
-        $options['body'] = $body;
-        $options['headers'] = array_merge($this->headers, $headers);
-
-        return $this->client->createRequest($httpMethod, $path, $options);
+        $this->handlerStack->push(Middleware::authenticate($tokenOrLogin, $password, $authMethod), 'trello_authenticate');
     }
 }

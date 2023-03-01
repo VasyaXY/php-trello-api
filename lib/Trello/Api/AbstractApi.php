@@ -130,7 +130,7 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function head($path, array $parameters = [], $requestHeaders = [])
     {
-        $response = $this->client->getHttpClient()->request($path, null, 'HEAD', $requestHeaders, [
+        $response = $this->client->getHttpClient()->request('HEAD', $path, $requestHeaders, [
             'query' => $parameters,
         ]);
 

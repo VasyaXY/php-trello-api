@@ -91,3 +91,8 @@ $api->members()->customStickers()
 $api->members()->savedSearches()
 ```
 
+### Webhooks API
+```php
+$api->members()->webhooks()
+```
+
