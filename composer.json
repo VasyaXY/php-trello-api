@@ -18,6 +18,7 @@
 	"require": {
 		"php": ">=8.0",
 		"symfony/event-dispatcher": "*",
+		"league/oauth1-client": "dev-develop",
 		"guzzlehttp/guzzle": "*"
 	},
 	"require-dev": {
