@@ -7,9 +7,9 @@ namespace Trello\Model;
  */
 class Organization extends AbstractObject implements OrganizationInterface
 {
-    protected $apiName = 'organization';
+    protected string $apiName = 'organization';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'fields' => 'all',
         'members' => 'all',
         'membersInvited' => 'all',

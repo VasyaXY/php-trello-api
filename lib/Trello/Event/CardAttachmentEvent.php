@@ -7,14 +7,14 @@ class CardAttachmentEvent extends CardEvent
     /**
      * @var array
      */
-    protected $attachment;
+    protected array $attachment;
 
     /**
      * Set attachment
      *
      * @param array $attachment
      */
-    public function setAttachment($attachment)
+    public function setAttachment(array $attachment): void
     {
         $this->attachment = $attachment;
     }
@@ -24,7 +24,7 @@ class CardAttachmentEvent extends CardEvent
      *
      * @return array
      */
-    public function getAttachment()
+    public function getAttachment(): array
     {
         return $this->attachment;
     }

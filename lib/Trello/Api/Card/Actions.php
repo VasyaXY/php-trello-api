@@ -12,7 +12,7 @@ use Trello\Api\AbstractApi;
  */
 class Actions extends AbstractApi
 {
-    protected $path = 'cards/#id#/actions';
+    protected string $path = 'cards/#id#/actions';
 
     /**
      * Get actions related to a given card
@@ -23,7 +23,7 @@ class Actions extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -37,7 +37,7 @@ class Actions extends AbstractApi
      *
      * @return array
      */
-    public function addComment($id, $text)
+    public function addComment(string $id, string $text): array
     {
         return $this->post($this->getPath($id) . '/comments', ['text' => $text]);
     }
@@ -51,7 +51,7 @@ class Actions extends AbstractApi
      *
      * @return array
      */
-    public function removeComment($id, $commentId)
+    public function removeComment(string $id, string $commentId): array
     {
         return $this->delete($this->getPath($id) . '/comments/' . rawurlencode($commentId));
     }

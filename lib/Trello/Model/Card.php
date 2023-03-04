@@ -11,9 +11,9 @@ use Trello\Exception\RuntimeException;
  */
 class Card extends AbstractObject implements CardInterface
 {
-    protected $apiName = 'card';
+    protected string $apiName = 'card';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'fields' => 'all',
         'board' => true,
         'list' => true,
@@ -26,9 +26,9 @@ class Card extends AbstractObject implements CardInterface
         'actions' => Events::CARD_COMMENT,
     ];
 
-    protected $newChecklists = [];
-    protected $newComments = [];
-    protected $commentsToBeRemoved = [];
+    protected array $newChecklists = [];
+    protected array $newComments = [];
+    protected array $commentsToBeRemoved = [];
 
     /**
      * {@inheritdoc}
@@ -273,7 +273,7 @@ class Card extends AbstractObject implements CardInterface
     /**
      * {@inheritdoc}
      */
-    public function setList(CardlistInterface $list)
+    public function setList(CardListInterface $list)
     {
         return $this->setListId($list->getId());
     }
@@ -283,7 +283,7 @@ class Card extends AbstractObject implements CardInterface
      */
     public function getList()
     {
-        return new Cardlist($this->client, $this->getListId());
+        return new CardList($this->client, $this->getListId());
     }
 
     public function moveToList($name)
@@ -344,7 +344,7 @@ class Card extends AbstractObject implements CardInterface
         $checklists = [];
 
         foreach ($this->getChecklistIds() as $id) {
-            $checklists[] = new Checklist($this->client, $id);
+            $checklists[] = new CheckList($this->client, $id);
         }
 
         $checklists = array_merge($checklists, $this->newChecklists);
@@ -376,7 +376,7 @@ class Card extends AbstractObject implements CardInterface
      */
     public function hasChecklist($checklist)
     {
-        if ($checklist instanceof ChecklistInterface) {
+        if ($checklist instanceof CheckListInterface) {
             return in_array($checklist->getId(), $this->data['idChecklists']);
         }
 
@@ -398,9 +398,9 @@ class Card extends AbstractObject implements CardInterface
             throw new RuntimeException("You can't add checklists to a new card, you have to save it first.");
         }
 
-        if (!$checklist instanceof ChecklistInterface) {
+        if (!$checklist instanceof CheckListInterface) {
             $name = $checklist;
-            $checklist = new Checklist($this->client);
+            $checklist = new CheckList($this->client);
             $checklist->setName($name);
         }
 
@@ -438,7 +438,7 @@ class Card extends AbstractObject implements CardInterface
             ));
         }
 
-        if (!$checklist instanceof ChecklistInterface) {
+        if (!$checklist instanceof CheckListInterface) {
             $checklist = $this->getChecklist($checklist);
         }
 

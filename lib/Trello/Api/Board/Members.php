@@ -18,7 +18,7 @@ class Members extends AbstractApi
      * Base path of board members api
      * @var string
      */
-    protected $path = 'boards/#id#/members';
+    protected string $path = 'boards/#id#/members';
 
     /**
      * Get a given board's members
@@ -29,7 +29,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -43,7 +43,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function remove($id, $memberId)
+    public function remove(string $id, string $memberId): array
     {
         return $this->delete($this->getPath($id) . '/' . $memberId);
     }
@@ -57,7 +57,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function filter($id, $filter = 'all')
+    public function filter(string $id, string|array $filter = 'all'): array
     {
         $allowed = ['none', 'normal', 'admins', 'owners', 'all'];
         $filters = $this->validateAllowedParameters($allowed, $filter, 'filter');
@@ -75,7 +75,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function cards($id, $memberId, array $params = [])
+    public function cards(string $id, string $memberId, array $params = []): array
     {
         return $this->get($this->getPath($id) . '/' . rawurlencode($memberId) . '/cards', $params);
     }
@@ -91,7 +91,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function invite($id, $email, $fullName, $role = 'normal')
+    public function invite(string $id, string $email, string $fullName, string $role = 'normal'): array
     {
         $roles = ['normal', 'observer', 'admin'];
 
@@ -120,7 +120,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function getInvitedMembers($id, array $params = [])
+    public function getInvitedMembers(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id) . 'Invited', $params);
     }
@@ -134,7 +134,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function getInvitedMembersField($id, $field)
+    public function getInvitedMembersField(string $id, string $field): array
     {
         $this->validateAllowedParameters(Member::$fields, $field, 'field');
 
@@ -150,7 +150,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function setRole($id, $memberOrOrganization, $role)
+    public function setRole(string $id, string $memberOrOrganization, string $role): array
     {
         $roles = ['normal', 'observer', 'admin'];
 

@@ -14,14 +14,14 @@ class Token extends AbstractApi
      * Base path of tokens api
      * @var string
      */
-    protected $path = 'tokens';
+    protected string $path = 'tokens';
 
     /**
      * Token fields
      * @link https://trello.com/docs/api/token/#get-1-tokens-token-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'identifier',
         'idMember',
         'dateCreated',
@@ -38,7 +38,7 @@ class Token extends AbstractApi
      *
      * @return array
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -51,7 +51,7 @@ class Token extends AbstractApi
      *
      * @return array
      */
-    public function remove($id)
+    public function remove(string $id): array
     {
         return $this->delete($this->getPath() . '/' . rawurlencode($id));
     }
@@ -65,7 +65,7 @@ class Token extends AbstractApi
      *
      * @return array
      */
-    public function getMember($id, array $params = [])
+    public function getMember(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/member', $params);
     }
@@ -78,7 +78,7 @@ class Token extends AbstractApi
      *
      * @return array
      */
-    public function getMemberField($id, $field)
+    public function getMemberField(string $id, string|array $field): array
     {
         $this->validateAllowedParameters(Member::$fields, $field, 'field');
 
@@ -90,7 +90,7 @@ class Token extends AbstractApi
      *
      * @return Token\Webhooks
      */
-    public function webhooks()
+    public function webhooks(): Token\Webhooks
     {
         return new Token\Webhooks($this->client);
     }

@@ -17,7 +17,7 @@ class Labels extends AbstractApi
      * Base path of board labels api
      * @var string
      */
-    protected $path = 'boards/#id#/labels';
+    protected string $path = 'boards/#id#/labels';
 
     /**
      * Get labels related to a given board
@@ -28,7 +28,7 @@ class Labels extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -42,7 +42,7 @@ class Labels extends AbstractApi
      *
      * @return array
      */
-    public function show($id, $color)
+    public function show(string $id, string $color): array
     {
         $colors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
 
@@ -71,7 +71,7 @@ class Labels extends AbstractApi
      *
      * @return array
      */
-    public function setName($id, $color, $name)
+    public function setName(string $id, string $color, string $name): array
     {
         $colors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
 

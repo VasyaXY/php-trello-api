@@ -24,5 +24,5 @@ class MyPreferences extends AbstractApi
      * Base path of board my preferences api
      * @var string
      */
-    protected $path = 'boards/#id#/myPrefs';
+    protected string $path = 'boards/#id#/myPrefs';
 }

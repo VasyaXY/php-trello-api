@@ -2,6 +2,10 @@
 
 namespace Trello\Api;
 
+use Trello\Api\Member\Cards;
+use Trello\Api\Member\Notifications;
+use Trello\Api\Member\Webhooks;
+
 /**
  * Trello Member API
  * @link https://trello.com/docs/api/member
@@ -25,14 +29,14 @@ class Member extends AbstractApi
      * Base path of members api
      * @var string
      */
-    protected $path = 'members';
+    protected string $path = 'members';
 
     /**
      * Member fields
      * @link https://trello.com/docs/api/member/#get-1-members-idmember-or-username-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'avatarHash',
         'bio',
         'bioData',
@@ -70,7 +74,7 @@ class Member extends AbstractApi
      *
      * @return array list info
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -85,7 +89,7 @@ class Member extends AbstractApi
      *
      * @return array list info
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -99,7 +103,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function getDeltas($id, array $params = [])
+    public function getDeltas(string $id, array $params = []): array
     {
         return $this->get($this->path . '/' . rawurlencode($id) . '/deltas', $params);
     }
@@ -113,7 +117,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function setAvatarSource($id, $avatarSource)
+    public function setAvatarSource(string $id, string $avatarSource): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/avatarSource', ['value' => $avatarSource]);
     }
@@ -127,7 +131,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function setBio($id, $bio)
+    public function setBio(string $id, string $bio): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/bio', ['value' => $bio]);
     }
@@ -141,7 +145,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function setFullName($id, $fullName)
+    public function setFullName(string $id, string $fullName): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/fullName', ['value' => $fullName]);
     }
@@ -155,7 +159,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function setInitials($id, $initials)
+    public function setInitials(string $id, string $initials): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/initials', ['value' => $initials]);
     }
@@ -169,7 +173,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function setUsername($id, $username)
+    public function setUsername(string $id, string $username): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/username', ['value' => $username]);
     }
@@ -182,7 +186,7 @@ class Member extends AbstractApi
      *
      * @return array
      */
-    public function setAvatar($id, $file)
+    public function setAvatar(string $id, string $file): array
     {
         return $this->post($this->getPath() . '/' . rawurlencode($id) . '/avatar', ['file' => $file]);
     }
@@ -192,7 +196,7 @@ class Member extends AbstractApi
      *
      * @return Member\Actions
      */
-    public function actions()
+    public function actions(): Member\Actions
     {
         return new Member\Actions($this->client);
     }
@@ -202,7 +206,7 @@ class Member extends AbstractApi
      *
      * @return Member\Boards
      */
-    public function boards()
+    public function boards(): Member\Boards
     {
         return new Member\Boards($this->client);
     }
@@ -212,7 +216,7 @@ class Member extends AbstractApi
      *
      * @return Member\Cards
      */
-    public function cards()
+    public function cards(): Member\Cards
     {
         return new Member\Cards($this->client);
     }
@@ -220,9 +224,9 @@ class Member extends AbstractApi
     /**
      * Cards API
      *
-     * @return Member\Cards
+     * @return Member\Webhooks
      */
-    public function webhooks()
+    public function webhooks(): Member\Webhooks
     {
         return new Member\Webhooks($this->client);
     }
@@ -232,7 +236,7 @@ class Member extends AbstractApi
      *
      * @return Member\Notifications
      */
-    public function notifications()
+    public function notifications(): Member\Notifications
     {
         return new Member\Notifications($this->client);
     }
@@ -242,7 +246,7 @@ class Member extends AbstractApi
      *
      * @return Member\Organizations
      */
-    public function organizations()
+    public function organizations(): Member\Organizations
     {
         return new Member\Organizations($this->client);
     }
@@ -252,7 +256,7 @@ class Member extends AbstractApi
      *
      * @return Member\CustomBackgrounds
      */
-    public function customBackgrounds()
+    public function customBackgrounds(): Member\CustomBackgrounds
     {
         return new Member\CustomBackgrounds($this->client);
     }
@@ -262,7 +266,7 @@ class Member extends AbstractApi
      *
      * @return Member\CustomEmoji
      */
-    public function customEmoji()
+    public function customEmoji(): Member\CustomEmoji
     {
         return new Member\CustomEmoji($this->client);
     }
@@ -272,7 +276,7 @@ class Member extends AbstractApi
      *
      * @return Member\CustomStickers
      */
-    public function customStickers()
+    public function customStickers(): Member\CustomStickers
     {
         return new Member\CustomStickers($this->client);
     }
@@ -282,7 +286,7 @@ class Member extends AbstractApi
      *
      * @return Member\SavedSearches
      */
-    public function savedSearches()
+    public function savedSearches(): Member\SavedSearches
     {
         return new Member\SavedSearches($this->client);
     }

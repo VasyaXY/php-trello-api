@@ -15,7 +15,7 @@ use Trello\Api\Member\Board\Stars;
  */
 class Webhooks extends AbstractApi
 {
-    protected $path = 'members/#id#/tokens';
+    protected string $path = 'members/#id#/tokens';
 
     /**
      * Get boads related to a given member
@@ -26,7 +26,7 @@ class Webhooks extends AbstractApi
      *
      * @return array
      */
-    public function all($id = "me")
+    public function all(string $id = "me"): array
     {
         return $this->get($this->getPath($id), ['webhooks' => true]);
     }

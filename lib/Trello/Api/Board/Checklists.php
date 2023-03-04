@@ -16,7 +16,7 @@ class Checklists extends AbstractApi
      * Base path of board checklists api
      * @var string
      */
-    protected $path = 'boards/#id#/checklists';
+    protected string $path = 'boards/#id#/checklists';
 
     /**
      * Get cards related to a given board
@@ -27,7 +27,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -41,7 +41,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function create($id, array $params)
+    public function create(string $id, array $params): array
     {
         $this->validateRequiredParameters(['name'], $params);
 

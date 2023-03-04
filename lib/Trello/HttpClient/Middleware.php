@@ -86,7 +86,7 @@ class Middleware
      * @param $authMethod
      * @return callable
      */
-    public static function authenticate($tokenOrLogin, $password, $authMethod): callable
+    public static function authenticate(string $tokenOrLogin, string|null $password, string|null $authMethod): callable
     {
         return static function (callable $handler) use ($tokenOrLogin, $password, $authMethod) {
             return static function (RequestInterface $request, array $options) use ($handler, $tokenOrLogin, $password, $authMethod) {

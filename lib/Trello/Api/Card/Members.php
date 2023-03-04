@@ -13,7 +13,7 @@ use Trello\Exception\InvalidArgumentException;
  */
 class Members extends AbstractApi
 {
-    protected $path = 'cards/#id#/members';
+    protected string $path = 'cards/#id#/members';
 
     /**
      * Get members related to a given card
@@ -24,7 +24,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -38,7 +38,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function set($id, array $members)
+    public function set(string $id, array $members): array
     {
         if (!count($members)) {
             throw new InvalidArgumentException('You must specify at least one member id.');
@@ -54,11 +54,11 @@ class Members extends AbstractApi
      * @link https://trello.com/docs/api/card/#post-1-cards-card-id-or-shortlink-idmembers
      *
      * @param string $id the card's id or short link
-     * @param array $memberId the member's id
+     * @param string $memberId the member's id
      *
      * @return array
      */
-    public function add($id, $memberId)
+    public function add(string $id, string $memberId): array
     {
         return $this->post($this->getPath($id), ['value' => $memberId]);
     }
@@ -72,7 +72,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function remove($id, $memberId)
+    public function remove(string $id, string $memberId): array
     {
         return $this->delete($this->getPath($id) . '/' . rawurlencode($memberId));
     }
@@ -86,7 +86,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function addVote($id, $memberId)
+    public function addVote(string $id, string $memberId): array
     {
         return $this->post($this->getPath($id) . '/membersVoted', ['value' => $memberId]);
     }
@@ -100,7 +100,7 @@ class Members extends AbstractApi
      *
      * @return array
      */
-    public function removeVote($id, $memberId)
+    public function removeVote(string $id, string $memberId): array
     {
         return $this->delete($this->getPath($id) . '/membersVoted/' . rawurlencode($memberId));
     }

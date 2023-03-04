@@ -11,9 +11,9 @@ use Trello\Exception\RuntimeException;
  */
 class Label extends AbstractObject implements CardInterface
 {
-    protected $apiName = 'label';
+    protected string $apiName = 'label';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'fields' => 'all',
         'board' => true,
     ];

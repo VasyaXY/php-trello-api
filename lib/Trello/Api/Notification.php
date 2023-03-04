@@ -16,14 +16,14 @@ class Notification extends AbstractApi
      * Base path of notifications api
      * @var string
      */
-    protected $path = 'notifications';
+    protected string $path = 'notifications';
 
     /**
      * Notification fields
      * @link https://trello.com/docs/api/notification/#get-1-notifications-idnotification-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'unread',
         'type',
         'date',
@@ -40,7 +40,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -52,9 +52,9 @@ class Notification extends AbstractApi
      * @param string $id the notification's id
      * @param array $data attributes to update
      *
-     * @return arrays
+     * @return array
      */
-    public function update($id, array $data)
+    public function update(string $id, array $data): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id), $data);
     }
@@ -66,9 +66,9 @@ class Notification extends AbstractApi
      * @param string $id the notification's id
      * @param bool $status true for unread, false for read
      *
-     * @return arrays
+     * @return array
      */
-    public function setUnread($id, $status)
+    public function setUnread(string $id, bool $status): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/unread', ['value' => $status]);
     }
@@ -79,7 +79,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function setAllRead()
+    public function setAllRead(): array
     {
         return $this->post($this->getPath() . '/all/read');
     }
@@ -93,7 +93,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getEntities($id, array $params = [])
+    public function getEntities(string $id, array $params = []): array
     {
         return $this->get($this->path . '/' . rawurlencode($id) . '/entities', $params);
     }
@@ -107,7 +107,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getBoard($id, array $params = [])
+    public function getBoard(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/board', $params);
     }
@@ -123,7 +123,7 @@ class Notification extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getBoardField($id, $field)
+    public function getBoardField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Board::$fields, $field, 'field');
 
@@ -139,7 +139,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getList($id, array $params = [])
+    public function getList(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/list', $params);
     }
@@ -155,9 +155,9 @@ class Notification extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getListField($id, $field)
+    public function getListField(string $id, array $field): array
     {
-        $this->validateAllowedParameters(Cardlist::$fields, $field, 'field');
+        $this->validateAllowedParameters(CardList::$fields, $field, 'field');
 
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/list/' . rawurlencode($field));
     }
@@ -171,7 +171,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getCard($id, array $params = [])
+    public function getCard(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/card', $params);
     }
@@ -187,7 +187,7 @@ class Notification extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getCardField($id, $field)
+    public function getCardField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Card::$fields, $field, 'field');
 
@@ -203,7 +203,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getMember($id, array $params = [])
+    public function getMember(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/member', $params);
     }
@@ -219,7 +219,7 @@ class Notification extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getMemberField($id, $field)
+    public function getMemberField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Member::$fields, $field, 'field');
 
@@ -235,7 +235,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getCreator($id, array $params = [])
+    public function getCreator(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/memberCreator', $params);
     }
@@ -251,7 +251,7 @@ class Notification extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getCreatorField($id, $field)
+    public function getCreatorField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Member::$fields, $field, 'field');
 
@@ -267,7 +267,7 @@ class Notification extends AbstractApi
      *
      * @return array
      */
-    public function getOrganization($id, array $params = [])
+    public function getOrganization(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/organization', $params);
     }
@@ -283,7 +283,7 @@ class Notification extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getOrganizationField($id, $field)
+    public function getOrganizationField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Organization::$fields, $field, 'field');
 

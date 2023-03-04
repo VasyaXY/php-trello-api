@@ -13,7 +13,7 @@ use Trello\Api\Organization;
  */
 class Organizations extends AbstractApi
 {
-    protected $path = 'members/#id#/organizations';
+    protected string $path = 'members/#id#/organizations';
 
     /**
      * Get organizations related to a given member
@@ -24,7 +24,7 @@ class Organizations extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -38,7 +38,7 @@ class Organizations extends AbstractApi
      *
      * @return array
      */
-    public function filter($id, $filter = 'all')
+    public function filter(string $id, string|array $filter = 'all'): array
     {
         $allowed = ['all', 'none', 'members', 'public'];
         $filters = $this->validateAllowedParameters($allowed, $filter, 'filter');
@@ -55,7 +55,7 @@ class Organizations extends AbstractApi
      *
      * @return array
      */
-    public function invitedTo($id, array $params = [])
+    public function invitedTo(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id) . 'Invited', $params);
     }
@@ -68,7 +68,7 @@ class Organizations extends AbstractApi
      *
      * @return array
      */
-    public function invitedToField($id, $field)
+    public function invitedToField(string $id, string $field): array
     {
         $this->validateAllowedParameters(Organization::$fields, $field, 'field');
 

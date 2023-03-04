@@ -17,5 +17,5 @@ use Trello\Api\AbstractApi;
  */
 class CustomBackgrounds extends AbstractApi
 {
-    protected $path = 'members/#id#/customBackgrounds';
+    protected string $path = 'members/#id#/customBackgrounds';
 }

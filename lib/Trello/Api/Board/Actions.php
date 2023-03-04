@@ -16,7 +16,7 @@ class Actions extends AbstractApi
      * Base path of board actions api
      * @var string
      */
-    protected $path = 'boards/#id#/actions';
+    protected string $path = 'boards/#id#/actions';
 
     /**
      * Get actions related to a given board
@@ -27,7 +27,7 @@ class Actions extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }

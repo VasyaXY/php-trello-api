@@ -16,14 +16,14 @@ class Action extends AbstractApi
      * Base path of actions api
      * @var string
      */
-    protected $path = 'actions';
+    protected string $path = 'actions';
 
     /**
      * Action fields
      * @link https://trello.com/docs/api/action/#get-1-actions-idaction-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'idMemberCreator',
         'data',
         'type',
@@ -39,7 +39,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -53,7 +53,7 @@ class Action extends AbstractApi
      *
      * @return array list info
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -66,7 +66,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function remove($id)
+    public function remove(string $id): array
     {
         return $this->delete($this->getPath() . '/' . rawurlencode($id));
     }
@@ -80,7 +80,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function getBoard($id, array $params = [])
+    public function getBoard(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/board', $params);
     }
@@ -96,7 +96,7 @@ class Action extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getBoardField($id, $field)
+    public function getBoardField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Board::$fields, $field, 'field');
 
@@ -112,7 +112,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function getList($id, array $params = [])
+    public function getList(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/list', $params);
     }
@@ -128,9 +128,9 @@ class Action extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getListField($id, $field)
+    public function getListField(string $id, array $field): array
     {
-        $this->validateAllowedParameters(Cardlist::$fields, $field, 'field');
+        $this->validateAllowedParameters(CardList::$fields, $field, 'field');
 
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/list/' . rawurlencode($field));
     }
@@ -144,7 +144,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function getCard($id, array $params = [])
+    public function getCard(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/card', $params);
     }
@@ -160,7 +160,7 @@ class Action extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getCardField($id, $field)
+    public function getCardField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Card::$fields, $field, 'field');
 
@@ -176,7 +176,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function getMember($id, array $params = [])
+    public function getMember(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/member', $params);
     }
@@ -192,7 +192,7 @@ class Action extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getMemberField($id, $field)
+    public function getMemberField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Member::$fields, $field, 'field');
 
@@ -208,7 +208,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function getCreator($id, array $params = [])
+    public function getCreator(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/memberCreator', $params);
     }
@@ -224,7 +224,7 @@ class Action extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getCreatorField($id, $field)
+    public function getCreatorField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Member::$fields, $field, 'field');
 
@@ -240,7 +240,7 @@ class Action extends AbstractApi
      *
      * @return array
      */
-    public function getOrganization($id, array $params = [])
+    public function getOrganization(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/organization', $params);
     }
@@ -256,7 +256,7 @@ class Action extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getOrganizationField($id, $field)
+    public function getOrganizationField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Organization::$fields, $field, 'field');
 
@@ -272,7 +272,7 @@ class Action extends AbstractApi
      *
      * @return array card info
      */
-    public function setText($id, $text)
+    public function setText(string $id, string $text): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/text', ['value' => $text]);
     }

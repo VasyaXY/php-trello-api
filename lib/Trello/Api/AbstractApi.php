@@ -2,6 +2,8 @@
 
 namespace Trello\Api;
 
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Trello\Client;
 use Trello\HttpClient\Message\ResponseMediator;
 use Trello\Exception\InvalidArgumentException;
@@ -22,19 +24,19 @@ abstract class AbstractApi implements ApiInterface
      *
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * The client
      *
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * @var array
      */
-    public static $fields;
+    public static array $fields = [];
 
     /**
      * @param Client $client
@@ -56,7 +58,7 @@ abstract class AbstractApi implements ApiInterface
      * @throws BadMethodCallException If the method does not start with "get"
      *                                or the field is not included in the $fields property
      */
-    public function __call($method, $arguments)
+    public function __call(string $method, array $arguments): array
     {
         if (isset($this->fields) && substr($method, 0, 3) === 'get') {
             $property = lcfirst(substr($method, 3));
@@ -77,7 +79,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return array array of fields
      */
-    public function getFields()
+    public function getFields(): array
     {
         return static::$fields;
     }
@@ -92,7 +94,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @throws InvalidArgumentException If the field does not exist
      */
-    public function getField($id, $field)
+    public function getField(string $id, string $field): mixed
     {
         if (!in_array($field, static::$fields)) {
             throw new InvalidArgumentException(sprintf('There is no field named %s.', $field));
@@ -100,7 +102,7 @@ abstract class AbstractApi implements ApiInterface
 
         $response = $this->get($this->path . '/' . rawurlencode($id) . '/' . rawurlencode($field));
 
-        return isset($response['_value']) ? $response['_value'] : $response;
+        return $response['_value'] ?? $response;
     }
 
     /**
@@ -112,7 +114,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return mixed
      */
-    protected function get($path, array $parameters = [], $requestHeaders = [])
+    protected function get(string $path, array $parameters = [], array $requestHeaders = []): mixed
     {
         $response = $this->client->getHttpClient()->get($path, $parameters, $requestHeaders);
 
@@ -126,15 +128,13 @@ abstract class AbstractApi implements ApiInterface
      * @param array $parameters HEAD parameters.
      * @param array $requestHeaders Request headers.
      *
-     * @return \GuzzleHttp\Message\Response
+     * @return Response|ResponseInterface
      */
-    protected function head($path, array $parameters = [], $requestHeaders = [])
+    protected function head($path, array $parameters = [], array $requestHeaders = []): Response|ResponseInterface
     {
-        $response = $this->client->getHttpClient()->request('HEAD', $path, $requestHeaders, [
+        return $this->client->getHttpClient()->request('HEAD', $path, $requestHeaders, [
             'query' => $parameters,
         ]);
-
-        return $response;
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return mixed
      */
-    protected function post($path, array $parameters = [], $requestHeaders = [])
+    protected function post(string $path, array $parameters = [], array $requestHeaders = []): mixed
     {
         return $this->postRaw(
             $path,
@@ -164,7 +164,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return mixed
      */
-    protected function postRaw($path, $body, $requestHeaders = [])
+    protected function postRaw(string $path, mixed $body, array $requestHeaders = []): mixed
     {
         $response = $this->client->getHttpClient()->post(
             $path,
@@ -184,7 +184,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return mixed
      */
-    protected function patch($path, array $parameters = [], $requestHeaders = [])
+    protected function patch(string $path, array $parameters = [], array $requestHeaders = []): mixed
     {
         $response = $this->client->getHttpClient()->patch(
             $path,
@@ -204,7 +204,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return mixed
      */
-    protected function put($path, array $parameters = [], $requestHeaders = [])
+    protected function put(string $path, array $parameters = [], array $requestHeaders = []): mixed
     {
         foreach ($parameters as $name => $parameter) {
             if (is_bool($parameter)) {
@@ -230,7 +230,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return mixed
      */
-    protected function delete($path, array $parameters = [], $requestHeaders = [])
+    protected function delete(string $path, array $parameters = [], array $requestHeaders = []): mixed
     {
         $response = $this->client->getHttpClient()->delete(
             $path,
@@ -246,9 +246,9 @@ abstract class AbstractApi implements ApiInterface
      *
      * @param array $parameters Request parameters
      *
-     * @return null|string
+     * @return null|array
      */
-    protected function createParametersBody(array $parameters)
+    protected function createParametersBody(array $parameters): array
     {
         foreach ($parameters as $name => $parameter) {
             if (is_bool($parameter)) {
@@ -269,7 +269,7 @@ abstract class AbstractApi implements ApiInterface
         return $parameters;
     }
 
-    protected function getPath($id = null)
+    protected function getPath($id = null): string
     {
         if ($id) {
             return preg_replace('/\#id\#/', $id, $this->path);
@@ -286,7 +286,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @throws MissingArgumentException if a required parameter is missing
      */
-    protected function validateRequiredParameters(array $required, array $params)
+    protected function validateRequiredParameters(array $required, array $params): void
     {
         foreach ($required as $param) {
             if (!isset($params[$param])) {
@@ -307,7 +307,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @throws InvalidArgumentException if a parameter is not allowed
      */
-    protected function validateAllowedParameters(array $allowed, $params, $paramName)
+    protected function validateAllowedParameters(array $allowed, array|string $params, string $paramName): array
     {
         if (!is_array($params)) {
             $params = [$params];
@@ -338,7 +338,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @throws MissingArgumentException
      */
-    protected function validateAtLeastOneOf(array $atLeastOneOf, array $params)
+    protected function validateAtLeastOneOf(array $atLeastOneOf, array $params): bool
     {
         foreach ($atLeastOneOf as $param) {
             if (isset($params[$param])) {

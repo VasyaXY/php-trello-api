@@ -9,14 +9,14 @@ class BoardEvent extends AbstractEvent
     /**
      * @var BoardInterface
      */
-    protected $board;
+    protected BoardInterface $board;
 
     /**
      * Set board
      *
      * @param BoardInterface $board
      */
-    public function setBoard(BoardInterface $board)
+    public function setBoard(BoardInterface $board): void
     {
         $this->board = $board;
     }
@@ -26,7 +26,7 @@ class BoardEvent extends AbstractEvent
      *
      * @return BoardInterface
      */
-    public function getBoard()
+    public function getBoard(): BoardInterface
     {
         return $this->board;
     }

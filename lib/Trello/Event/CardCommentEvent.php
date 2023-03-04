@@ -9,14 +9,14 @@ class CardCommentEvent extends CardEvent
     /**
      * @var CommentInterface
      */
-    protected $comment;
+    protected CommentInterface $comment;
 
     /**
      * Set comment
      *
      * @param CommentInterface $comment
      */
-    public function setComment(CommentInterface $comment)
+    public function setComment(CommentInterface $comment): void
     {
         $this->comment = $comment;
     }
@@ -26,7 +26,7 @@ class CardCommentEvent extends CardEvent
      *
      * @return CommentInterface
      */
-    public function getComment()
+    public function getComment(): CommentInterface
     {
         return $this->comment;
     }

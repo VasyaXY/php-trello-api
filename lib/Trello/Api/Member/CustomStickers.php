@@ -16,5 +16,5 @@ use Trello\Api\AbstractApi;
  */
 class CustomStickers extends AbstractApi
 {
-    protected $path = 'members/#id#/customStickers';
+    protected string $path = 'members/#id#/customStickers';
 }

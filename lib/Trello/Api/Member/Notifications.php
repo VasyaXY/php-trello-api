@@ -13,7 +13,7 @@ use Trello\Events;
  */
 class Notifications extends AbstractApi
 {
-    protected $path = 'members/#id#/notifications';
+    protected string $path = 'members/#id#/notifications';
 
     /**
      * Get notifications related to a given list
@@ -24,7 +24,7 @@ class Notifications extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -38,7 +38,7 @@ class Notifications extends AbstractApi
      *
      * @return array
      */
-    public function filter($id, $event = 'all')
+    public function filter(string $id, string|array $event = 'all'): array
     {
         $events = Events::all();
         $events[] = 'all';

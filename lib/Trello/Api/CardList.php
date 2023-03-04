@@ -10,20 +10,20 @@ use Trello\Exception\InvalidArgumentException;
  *
  * Fully implemented.
  */
-class Cardlist extends AbstractApi
+class CardList extends AbstractApi
 {
     /**
      * Base path of lists api
      * @var string
      */
-    protected $path = 'lists';
+    protected string $path = 'lists';
 
     /**
      * List fields
      * @link https://trello.com/docs/api/list/#get-1-lists-list-id-or-shortlink-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'name',
         'closed',
         'idBoard',
@@ -40,7 +40,7 @@ class Cardlist extends AbstractApi
      *
      * @return array list info
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -54,7 +54,7 @@ class Cardlist extends AbstractApi
      *
      * @return array
      */
-    public function create(array $params = [])
+    public function create(array $params = []): array
     {
         $this->validateRequiredParameters(['name', 'idBoard'], $params);
 
@@ -70,7 +70,7 @@ class Cardlist extends AbstractApi
      *
      * @return array list info
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -84,7 +84,7 @@ class Cardlist extends AbstractApi
      *
      * @return array board info
      */
-    public function setBoard($id, $boardId)
+    public function setBoard(string $id, string $boardId): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/idBoard', ['value' => $boardId]);
     }
@@ -98,7 +98,7 @@ class Cardlist extends AbstractApi
      *
      * @return array board info
      */
-    public function getBoard($id, array $params = [])
+    public function getBoard(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/board', $params);
     }
@@ -114,7 +114,7 @@ class Cardlist extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getBoardField($id, $field)
+    public function getBoardField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Board::$fields, $field, 'field');
 
@@ -130,7 +130,7 @@ class Cardlist extends AbstractApi
      *
      * @return array list info
      */
-    public function setName($id, $name)
+    public function setName(string $id, string $name): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/name', ['value' => $name]);
     }
@@ -144,7 +144,7 @@ class Cardlist extends AbstractApi
      *
      * @return array list info
      */
-    public function setSubscribed($id, $subscribed)
+    public function setSubscribed(string $id, bool $subscribed): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/subscribed', ['value' => $subscribed]);
     }
@@ -158,7 +158,7 @@ class Cardlist extends AbstractApi
      *
      * @return array list info
      */
-    public function setClosed($id, $closed = true)
+    public function setClosed(string $id, bool $closed = true): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/closed', ['value' => $closed]);
     }
@@ -173,7 +173,7 @@ class Cardlist extends AbstractApi
      *
      * @return array list info
      */
-    public function setPosition($id, $position)
+    public function setPosition(string $id, string|int $position): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/pos', ['value' => $position]);
     }
@@ -183,7 +183,7 @@ class Cardlist extends AbstractApi
      *
      * @return Cardlist\Actions
      */
-    public function actions()
+    public function actions(): Cardlist\Actions
     {
         return new Cardlist\Actions($this->client);
     }
@@ -193,7 +193,7 @@ class Cardlist extends AbstractApi
      *
      * @return Cardlist\Cards
      */
-    public function cards()
+    public function cards(): Cardlist\Cards
     {
         return new Cardlist\Cards($this->client);
     }

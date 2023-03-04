@@ -2,21 +2,21 @@
 
 namespace Trello\Event;
 
-use Trello\Model\CardlistInterface;
+use Trello\Model\CardListInterface;
 
 class ListEvent extends AbstractEvent
 {
     /**
-     * @var CardlistInterface
+     * @var CardListInterface
      */
-    protected $list;
+    protected CardListInterface $list;
 
     /**
      * Set cardlist
      *
-     * @param CardlistInterface $list
+     * @param CardListInterface $list
      */
-    public function setList(CardlistInterface $list)
+    public function setList(CardListInterface $list): void
     {
         $this->list = $list;
     }
@@ -24,9 +24,9 @@ class ListEvent extends AbstractEvent
     /**
      * Get cardlist
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
-    public function getList()
+    public function getList(): CardListInterface
     {
         return $this->list;
     }

@@ -9,9 +9,9 @@ use Trello\Exception\InvalidArgumentException;
  */
 class Board extends AbstractObject implements BoardInterface
 {
-    protected $apiName = 'board';
+    protected string $apiName = 'board';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'fields' => 'all',
         'organization' => true,
         'organization_memberships' => 'all',
@@ -24,7 +24,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->data['name'] = $name;
 
@@ -34,7 +34,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->data['name'];
     }
@@ -42,7 +42,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setDescription($desc)
+    public function setDescription($desc): self
     {
         $this->data['desc'] = $desc;
 
@@ -52,7 +52,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->data['desc'];
     }
@@ -60,7 +60,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescriptionData()
+    public function getDescriptionData(): string
     {
         return $this->data['descData'];
     }
@@ -68,7 +68,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->data['url'];
     }
@@ -76,7 +76,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getShortUrl()
+    public function getShortUrl(): string
     {
         return $this->data['shortUrl'];
     }
@@ -84,7 +84,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getShortLink()
+    public function getShortLink(): string
     {
         return $this->data['shortLink'];
     }
@@ -92,7 +92,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setOrganizationId($organizationId)
+    public function setOrganizationId($organizationId): self
     {
         $this->data['idOrganization'] = $organizationId;
 
@@ -102,7 +102,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrganizationId()
+    public function getOrganizationId(): string
     {
         return $this->data['idOrganization'];
     }
@@ -110,7 +110,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setOrganization(OrganizationInterface $organization)
+    public function setOrganization(OrganizationInterface $organization): self
     {
         return $this->setOrganizationId($organization->getId());
     }
@@ -118,7 +118,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrganization()
+    public function getOrganization(): Organization
     {
         return new Organization($this->client, $this->getOrganizationId());
     }
@@ -126,12 +126,12 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getLists()
+    public function getLists(): array
     {
         $lists = [];
 
         foreach ($this->data['lists'] as $data) {
-            $lists[$data['id']] = new Cardlist($this->client, $data['id']);
+            $lists[$data['id']] = new CardList($this->client, $data['id']);
         }
 
         return $lists;
@@ -140,7 +140,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getList($idOrName)
+    public function getList($idOrName): CardListInterface|null
     {
         foreach ($this->getLists() as $list) {
             if ($list->getName() === $idOrName || $list->getId() === $idOrName) {
@@ -158,7 +158,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setClosed($closed)
+    public function setClosed($closed): self
     {
         $this->data['closed'] = $closed;
 
@@ -168,7 +168,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function isClosed()
+    public function isClosed(): bool
     {
         return $this->data['closed'];
     }
@@ -176,7 +176,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setPinned($pinned)
+    public function setPinned($pinned): self
     {
         $this->data['pinned'] = $pinned;
 
@@ -186,7 +186,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function isPinned()
+    public function isPinned(): bool
     {
         return $this->data['pinned'];
     }
@@ -194,7 +194,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setStarred($starred)
+    public function setStarred($starred): self
     {
         $this->data['starred'] = $starred;
 
@@ -204,7 +204,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function isStarred()
+    public function isStarred(): bool
     {
         return $this->data['starred'];
     }
@@ -212,7 +212,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setSubscribed($subscribed)
+    public function setSubscribed($subscribed): self
     {
         $this->data['subscribed'] = $subscribed;
 
@@ -222,7 +222,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function isSubscribed()
+    public function isSubscribed(): bool
     {
         return $this->data['subscribed'];
     }
@@ -230,7 +230,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function isInvited()
+    public function isInvited(): bool
     {
         return $this->data['invited'];
     }
@@ -238,7 +238,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setRequiredRoleToInvite($role)
+    public function setRequiredRoleToInvite($role): self
     {
         $this->data['invitations'] = $role;
 
@@ -248,7 +248,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getRequiredRoleToInvite()
+    public function getRequiredRoleToInvite(): string
     {
         return $this->data['invitations'];
     }
@@ -256,7 +256,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setMemberships(array $memberships)
+    public function setMemberships(array $memberships): self
     {
         $this->data['memberships'] = $memberships;
 
@@ -266,7 +266,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getMemberships()
+    public function getMemberships(): array
     {
         return $this->data['memberships'];
     }
@@ -274,7 +274,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setPreferences(array $prefs)
+    public function setPreferences(array $prefs): self
     {
         $this->data['prefs'] = $prefs;
 
@@ -284,7 +284,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getPreferences()
+    public function getPreferences(): array
     {
         return $this->data['prefs'];
     }
@@ -292,7 +292,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabelNames(array $labelNames)
+    public function setLabelNames(array $labelNames): self
     {
         $this->data['labelNames'] = $labelNames;
 
@@ -302,7 +302,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabelNames()
+    public function getLabelNames(): array
     {
         return $this->data['labelNames'];
     }
@@ -310,7 +310,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function setPowerUps(array $powerUps)
+    public function setPowerUps(array $powerUps): self
     {
         $this->data['powerUps'] = $powerUps;
 
@@ -320,7 +320,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getPowerUps()
+    public function getPowerUps(): array
     {
         return $this->data['powerUps'];
     }
@@ -328,7 +328,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getDateOfLastActivity()
+    public function getDateOfLastActivity(): \DateTime
     {
         return new \DateTime($this->data['dateLastActivity']);
     }
@@ -336,7 +336,7 @@ class Board extends AbstractObject implements BoardInterface
     /**
      * {@inheritdoc}
      */
-    public function getDateOfLastView()
+    public function getDateOfLastView(): \DateTime
     {
         return new \DateTime($this->data['dateLastView']);
     }

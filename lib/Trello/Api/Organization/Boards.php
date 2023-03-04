@@ -16,5 +16,5 @@ class Boards extends MemberBoards
      * Base path of organization boards api
      * @var string
      */
-    protected $path = 'organizations/#id#/boards';
+    protected string $path = 'organizations/#id#/boards';
 }

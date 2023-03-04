@@ -2,14 +2,14 @@
 
 namespace Trello\Model;
 
-interface CardlistInterface extends ObjectInterface
+interface CardListInterface extends ObjectInterface
 {
     /**
      * Set name
      *
      * @param string $name
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function setName($name);
 
@@ -25,7 +25,7 @@ interface CardlistInterface extends ObjectInterface
      *
      * @param string $boardId
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function setBoardId($boardId);
 
@@ -41,7 +41,7 @@ interface CardlistInterface extends ObjectInterface
      *
      * @param BoardInterface $board
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function setBoard(BoardInterface $board);
 
@@ -57,7 +57,7 @@ interface CardlistInterface extends ObjectInterface
      *
      * @param string $pos
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function setPosition($pos);
 
@@ -73,7 +73,7 @@ interface CardlistInterface extends ObjectInterface
      *
      * @param bool $closed
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function setClosed($closed);
 
@@ -89,7 +89,7 @@ interface CardlistInterface extends ObjectInterface
      *
      * @param bool $subscribed
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function setSubscribed($subscribed);
 

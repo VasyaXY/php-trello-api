@@ -3,10 +3,11 @@
 namespace Trello\HttpClient\Message;
 
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class ResponseMediator
 {
-    public static function getContent(Response $response)
+    public static function getContent(Response|ResponseInterface $response)
     {
         $body = $response->getBody()->getContents();
 

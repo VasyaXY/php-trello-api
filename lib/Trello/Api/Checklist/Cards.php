@@ -12,7 +12,7 @@ use Trello\Api\AbstractApi;
  */
 class Cards extends AbstractApi
 {
-    protected $path = 'checklists/#id#/cards';
+    protected string $path = 'checklists/#id#/cards';
 
     /**
      * Get cards related to a given checklist
@@ -23,7 +23,7 @@ class Cards extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -37,7 +37,7 @@ class Cards extends AbstractApi
      *
      * @return array
      */
-    public function filter($id, $filter = 'all')
+    public function filter(string $id, string|array $filter = 'all'): array
     {
         $allowed = ['none', 'open', 'closed', 'all'];
         $filters = $this->validateAllowedParameters($allowed, $filter, 'filter');

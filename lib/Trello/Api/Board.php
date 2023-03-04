@@ -2,6 +2,17 @@
 
 namespace Trello\Api;
 
+use Trello\Api\Board\Actions;
+use Trello\Api\Board\Cardlists;
+use Trello\Api\Board\Cards;
+use Trello\Api\Board\Checklists;
+use Trello\Api\Board\Labels;
+use Trello\Api\Board\Members;
+use Trello\Api\Board\Memberships;
+use Trello\Api\Board\MyPreferences;
+use Trello\Api\Board\PowerUps;
+use Trello\Api\Board\Preferences;
+
 /**
  * Trello Board API
  * @package PHP Trello API
@@ -22,14 +33,14 @@ class Board extends AbstractApi
      * Base path of boards api
      * @var string
      */
-    protected $path = 'boards';
+    protected string $path = 'boards';
 
     /**
      * Board fields
      * @link https://trello.com/docs/api/board/#get-1-boards-board-id-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'name',
         'desc',
         'descData',
@@ -60,7 +71,7 @@ class Board extends AbstractApi
      *
      * @return array board info
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -73,7 +84,7 @@ class Board extends AbstractApi
      *
      * @return array board info
      */
-    public function create(array $params = [])
+    public function create(array $params = []): array
     {
         $this->validateRequiredParameters(['name'], $params);
 
@@ -89,7 +100,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -103,7 +114,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function setName($id, $name)
+    public function setName(string $id, string $name): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/name', ['value' => $name]);
     }
@@ -117,7 +128,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function setDescription($id, $description)
+    public function setDescription(string $id, string $description): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/desc', ['value' => $description]);
     }
@@ -131,7 +142,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function setClosed($id, $closed = true)
+    public function setClosed(string $id, bool $closed = true): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/closed', ['value' => $closed]);
     }
@@ -145,7 +156,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function setSubscribed($id, $subscribed = true)
+    public function setSubscribed(string $id, bool $subscribed = true): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/subscribed', ['value' => $subscribed]);
     }
@@ -159,7 +170,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function setOrganization($id, $organizationId)
+    public function setOrganization(string $id, string $organizationId): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/idOrganization/' . rawurlencode($organizationId));
     }
@@ -173,7 +184,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function getOrganization($id, array $params = [])
+    public function getOrganization(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/organization', $params);
     }
@@ -187,7 +198,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function getOrganizationField($id, $field)
+    public function getOrganizationField(string $id, string $field): array
     {
         $this->validateAllowedParameters(Organization::$fields, $field, 'field');
 
@@ -203,7 +214,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function getStars($id, array $params = [])
+    public function getStars(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/boardStars', $params);
     }
@@ -217,7 +228,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function getDeltas($id, array $params = [])
+    public function getDeltas(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/deltas', $params);
     }
@@ -230,7 +241,7 @@ class Board extends AbstractApi
      *
      * @return array
      */
-    public function setViewed($id)
+    public function setViewed(string $id): array
     {
         return $this->post($this->getPath() . '/' . rawurlencode($id) . '/markAsViewed');
     }
@@ -240,7 +251,7 @@ class Board extends AbstractApi
      *
      * @return Board\Actions
      */
-    public function actions()
+    public function actions(): Actions
     {
         return new Board\Actions($this->client);
     }
@@ -250,7 +261,7 @@ class Board extends AbstractApi
      *
      * @return Board\Cardlists
      */
-    public function lists()
+    public function lists(): Cardlists
     {
         return new Board\Cardlists($this->client);
     }
@@ -260,7 +271,7 @@ class Board extends AbstractApi
      *
      * @return Board\Cards
      */
-    public function cards()
+    public function cards(): Cards
     {
         return new Board\Cards($this->client);
     }
@@ -270,7 +281,7 @@ class Board extends AbstractApi
      *
      * @return Board\Checklists
      */
-    public function checklists()
+    public function checklists(): Checklists
     {
         return new Board\Checklists($this->client);
     }
@@ -280,7 +291,7 @@ class Board extends AbstractApi
      *
      * @return Board\Labels
      */
-    public function labels()
+    public function labels(): Labels
     {
         return new Board\Labels($this->client);
     }
@@ -290,7 +301,7 @@ class Board extends AbstractApi
      *
      * @return Board\Members
      */
-    public function members()
+    public function members(): Members
     {
         return new Board\Members($this->client);
     }
@@ -300,7 +311,7 @@ class Board extends AbstractApi
      *
      * @return Board\Memberships
      */
-    public function memberships()
+    public function memberships(): Memberships
     {
         return new Board\Memberships($this->client);
     }
@@ -310,7 +321,7 @@ class Board extends AbstractApi
      *
      * @return Board\Preferences
      */
-    public function preferences()
+    public function preferences(): Preferences
     {
         return new Board\Preferences($this->client);
     }
@@ -320,7 +331,7 @@ class Board extends AbstractApi
      *
      * @return Board\MyPreferences
      */
-    public function myPreferences()
+    public function myPreferences(): MyPreferences
     {
         return new Board\MyPreferences($this->client);
     }
@@ -330,7 +341,7 @@ class Board extends AbstractApi
      *
      * @return Board\PowerUps
      */
-    public function powerUps()
+    public function powerUps(): PowerUps
     {
         return new Board\PowerUps($this->client);
     }

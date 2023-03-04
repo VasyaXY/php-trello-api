@@ -5,7 +5,9 @@ namespace Trello\HttpClient;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\ResponseInterface;
 use Trello\Exception\ErrorException;
 use Trello\Exception\RuntimeException;
 
@@ -13,7 +15,7 @@ class HttpClient implements HttpClientInterface
 {
     protected const API_VERSION = 1;
 
-    protected $options = [
+    protected array $options = [
         'base_uri' => 'https://api.trello.com/' . self::API_VERSION . '/',
         RequestOptions::HTTP_ERRORS => false,
         RequestOptions::TIMEOUT => 10,
@@ -22,14 +24,14 @@ class HttpClient implements HttpClientInterface
     /**
      * @var ClientInterface
      */
-    protected $client;
+    protected ClientInterface $client;
 
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * @var \GuzzleHttp\HandlerStack
      */
-    protected $handlerStack;
+    protected HandlerStack $handlerStack;
 
     /**
      * @param array $options
@@ -50,7 +52,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function setOption($name, $value)
+    public function setOption(string $name, mixed $value): void
     {
         $this->options[$name] = $value;
     }
@@ -58,7 +60,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = array_merge($this->headers, $headers);
     }
@@ -66,7 +68,7 @@ class HttpClient implements HttpClientInterface
     /**
      * Clears used headers
      */
-    public function clearHeaders()
+    public function clearHeaders(): void
     {
         $this->headers = [
             'Accept' => sprintf('application/vnd.orcid.%s+json', self::API_VERSION),
@@ -78,7 +80,7 @@ class HttpClient implements HttpClientInterface
      *
      * @return \GuzzleHttp\HandlerStack
      */
-    public function getHandlerStack()
+    public function getHandlerStack(): HandlerStack
     {
         return $this->handlerStack;
     }
@@ -86,7 +88,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function get($path, array $parameters = [], array $headers = [])
+    public function get(string $path, array $parameters = [], array $headers = []): Response|ResponseInterface
     {
         return $this->request('GET', $path, $headers, [
             RequestOptions::QUERY => $parameters,
@@ -96,7 +98,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function post($path, $body = null, array $headers = [])
+    public function post(string $path, mixed $body = null, array $headers = []): Response|ResponseInterface
     {
         return $this->request('POST', $path, $headers, [
             RequestOptions::FORM_PARAMS => $body,
@@ -106,7 +108,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function patch($path, $body = null, array $headers = [])
+    public function patch(string $path, mixed $body = null, array $headers = []): Response|ResponseInterface
     {
         return $this->request('PATCH', $path, $headers, [
             RequestOptions::FORM_PARAMS => $body,
@@ -116,7 +118,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function delete($path, $body = null, array $headers = [])
+    public function delete(string $path, mixed $body = null, array $headers = []): Response|ResponseInterface
     {
         return $this->request('DELETE', $path, $headers, [
             RequestOptions::FORM_PARAMS => $body,
@@ -126,7 +128,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function put($path, $body, array $headers = [])
+    public function put(string $path, mixed $body, array $headers = []): Response|ResponseInterface
     {
         return $this->request('PUT', $path, $headers, [
             RequestOptions::FORM_PARAMS => $body,
@@ -136,7 +138,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function request($httpMethod = 'GET', $path = '', array $headers = [], array $options = [])
+    public function request(string $httpMethod = 'GET', string $path = '', array $headers = [], array $options = []): Response|ResponseInterface
     {
         $options['headers'] = array_merge($this->headers, $headers);
         $options = array_merge($this->options, $options);
@@ -155,7 +157,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function authenticate($tokenOrLogin, $password, $authMethod)
+    public function authenticate(string $tokenOrLogin, string|null $password, string|null $authMethod): void
     {
         $this->handlerStack->push(Middleware::authenticate($tokenOrLogin, $password, $authMethod), 'trello_authenticate');
     }

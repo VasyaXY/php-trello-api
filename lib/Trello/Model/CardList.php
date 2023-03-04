@@ -5,11 +5,11 @@ namespace Trello\Model;
 /**
  * @codeCoverageIgnore
  */
-class Cardlist extends AbstractObject implements CardlistInterface
+class CardList extends AbstractObject implements CardListInterface
 {
-    protected $apiName = 'list';
+    protected string $apiName = 'list';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'cards' => 'all',
         'fields' => 'all',
     ];

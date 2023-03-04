@@ -9,14 +9,14 @@ abstract class AbstractEvent extends GenericEvent
     /**
      * @var array
      */
-    protected $requestData;
+    protected array $requestData;
 
     /**
      * Set request data
      *
      * @param array $requestData
      */
-    public function setRequestData(array $requestData)
+    public function setRequestData(array $requestData): void
     {
         $this->requestData = $requestData;
     }
@@ -26,7 +26,7 @@ abstract class AbstractEvent extends GenericEvent
      *
      * @return array
      */
-    public function getRequestData()
+    public function getRequestData(): array
     {
         return $this->requestData;
     }

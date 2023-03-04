@@ -2,11 +2,26 @@
 
 namespace Trello;
 
+use League\OAuth1\Client\Credentials\TemporaryCredentials;
+use League\OAuth1\Client\Credentials\TokenCredentials;
+use League\OAuth1\Client\Server\Trello as OAuthServer;
+use Trello\Api\Action;
 use Trello\Api\ApiInterface;
-use Trello\Exception\InvalidArgumentException;
+use Trello\Api\Board;
+use Trello\Api\Card;
+use Trello\Api\CardList;
+use Trello\Api\Checklist;
+use Trello\Api\Label;
+use Trello\Api\Member;
+use Trello\Api\Notification;
+use Trello\Api\Organization;
+use Trello\Api\Token;
+use Trello\Api\Webhook;
 use Trello\Exception\BadMethodCallException;
+use Trello\Exception\InvalidArgumentException;
 use Trello\HttpClient\HttpClient;
 use Trello\HttpClient\HttpClientInterface;
+use vasyaxy\Services\Trello\Configuration;
 
 /**
  * Simple PHP Trello client
@@ -19,8 +34,8 @@ use Trello\HttpClient\HttpClientInterface;
  * @method Api\Card cards()
  * @method Api\Checklist checklist()
  * @method Api\Checklist checklists()
- * @method Api\Cardlist list()
- * @method Api\Cardlist lists()
+ * @method Api\CardList list()
+ * @method Api\CardList lists()
  * @method Api\Organization organization()
  * @method Api\Organization organizations()
  * @method Api\Member member()
@@ -56,16 +71,27 @@ class Client implements ClientInterface
      */
     const AUTH_HTTP_TOKEN = 'http_token';
 
+    var TemporaryCredentials|null $TemporaryCredentials = null;
+
     /**
      * @var array
      */
-    private $options = [
+    private array $options = [
         'base_url' => 'https://api.trello.com/',
-        'user_agent' => 'php-trello-api (http://github.com/cdaguerre/php-trello-api)',
+        'user_agent' => 'php-trello-api',
         'timeout' => 10,
         'api_limit' => 5000,
         'api_version' => 1,
         'cache_dir' => null,
+    ];
+
+    private array $authOptions = [
+        'identifier' => '',
+        'secret' => '',
+        'callback_uri' => '',
+        'name' => 'Trello Google GoogleCalendar',
+        'expiration' => 'never',
+        'scope' => 'read,write',
     ];
 
     /**
@@ -73,7 +99,8 @@ class Client implements ClientInterface
      *
      * @var HttpClientInterface
      */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
+    private OAuthServer|null $OAuthServer = null;
 
     /**
      * Instantiate a new Trello client
@@ -82,7 +109,7 @@ class Client implements ClientInterface
      */
     public function __construct(HttpClientInterface $httpClient = null)
     {
-        $this->httpClient = $httpClient;
+        $this->httpClient = $httpClient ?? new HttpClient();
     }
 
     /**
@@ -94,7 +121,7 @@ class Client implements ClientInterface
      *
      * @throws InvalidArgumentException if the requested api does not exist
      */
-    public function api($name)
+    public function api(string $name): ApiInterface
     {
         switch ($name) {
             case 'action':
@@ -117,7 +144,7 @@ class Client implements ClientInterface
             case 'lists':
             case 'cardlist':
             case 'cardlists':
-                $api = new Api\Cardlist($this);
+                $api = new Api\CardList($this);
                 break;
             case 'member':
             case 'members':
@@ -150,6 +177,62 @@ class Client implements ClientInterface
         return $api;
     }
 
+
+    public function apiAction(): Action
+    {
+        return new Api\Action($this);
+    }
+
+    public function apiBoard(): Board
+    {
+        return new Api\Board($this);
+    }
+
+    public function apiCard(): Card
+    {
+        return new Api\Card($this);
+    }
+
+    public function apiChecklist(): Checklist
+    {
+        return new Api\Checklist($this);
+    }
+
+    public function apiCardList(): CardList
+    {
+        return new Api\CardList($this);
+    }
+
+    public function apiMember(): Member
+    {
+        return new Api\Member($this);
+    }
+
+    public function apiNotification(): Notification
+    {
+        return new Api\Notification($this);
+    }
+
+    public function apiOrganization(): Organization
+    {
+        return new Api\Organization($this);
+    }
+
+    public function apiToken(): Token
+    {
+        return new Api\Token($this);
+    }
+
+    public function apiWebhook(): Webhook
+    {
+        return new Api\Webhook($this);
+    }
+
+    public function apiLabel(): Label
+    {
+        return new Api\Label($this);
+    }
+
     /**
      * Authenticate a user for all next requests
      *
@@ -159,7 +242,7 @@ class Client implements ClientInterface
      *
      * @throws InvalidArgumentException If no authentication method was given
      */
-    public function authenticate($tokenOrLogin, $password = null, $authMethod = null)
+    public function authenticate(string $tokenOrLogin, string|null $password = null, string|null $authMethod = null): self
     {
         if (null === $password && null === $authMethod) {
             throw new InvalidArgumentException('You need to specify authentication method!');
@@ -181,6 +264,8 @@ class Client implements ClientInterface
         }
 
         $this->getHttpClient()->authenticate($tokenOrLogin, $password, $authMethod);
+
+        return $this;
     }
 
     /**
@@ -188,7 +273,7 @@ class Client implements ClientInterface
      *
      * @return HttpClient
      */
-    public function getHttpClient()
+    public function getHttpClient(): HttpClient
     {
         if (null === $this->httpClient) {
             $this->httpClient = new HttpClient($this->options);
@@ -202,17 +287,19 @@ class Client implements ClientInterface
      *
      * @param HttpClientInterface $httpClient
      */
-    public function setHttpClient(HttpClientInterface $httpClient)
+    public function setHttpClient(HttpClientInterface $httpClient): self
     {
         $this->httpClient = $httpClient;
+        return $this;
     }
 
     /**
      * Clears used headers
      */
-    public function clearHeaders()
+    public function clearHeaders(): self
     {
         $this->getHttpClient()->clearHeaders();
+        return $this;
     }
 
     /**
@@ -220,9 +307,10 @@ class Client implements ClientInterface
      *
      * @param array $headers
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): self
     {
         $this->getHttpClient()->setHeaders($headers);
+        return $this;
     }
 
     /**
@@ -234,13 +322,31 @@ class Client implements ClientInterface
      *
      * @throws InvalidArgumentException
      */
-    public function getOption($name)
+    public function getOption(string $name): mixed
     {
         if (!array_key_exists($name, $this->options)) {
             throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
         }
 
         return $this->options[$name];
+    }
+
+    /**
+     * Get option by name
+     *
+     * @param string $name the option's name
+     *
+     * @return mixed
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getAuthOption(string $name): mixed
+    {
+        if (!array_key_exists($name, $this->authOptions)) {
+            throw new InvalidArgumentException(sprintf('Undefined auth option called: "%s"', $name));
+        }
+
+        return $this->authOptions[$name];
     }
 
     /**
@@ -252,7 +358,7 @@ class Client implements ClientInterface
      * @throws InvalidArgumentException if the option is not defined
      * @throws InvalidArgumentException if the api version is set to an unsupported one
      */
-    public function setOption($name, $value)
+    public function setOption(string $name, mixed $value): self
     {
         if (!array_key_exists($name, $this->options)) {
             throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
@@ -263,6 +369,26 @@ class Client implements ClientInterface
         }
 
         $this->options[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * Set option
+     *
+     * @param string $name
+     * @param mixed $value
+     *
+     * @throws InvalidArgumentException if the option is not defined
+     * @throws InvalidArgumentException if the api version is set to an unsupported one
+     */
+    public function setAuthOption(string $name, mixed $value): self
+    {
+        if (!array_key_exists($name, $this->authOptions)) {
+            throw new InvalidArgumentException(sprintf('Undefined auth option called: "%s"', $name));
+        }
+
+        $this->authOptions[$name] = $value;
+        return $this;
     }
 
     /**
@@ -270,9 +396,46 @@ class Client implements ClientInterface
      *
      * @return integer[]
      */
-    public function getSupportedApiVersions()
+    public function getSupportedApiVersions(): array
     {
         return [1];
+    }
+
+    private function getOAuthServer(): OAuthServer
+    {
+        if (!$this->OAuthServer) {
+            $this->OAuthServer = new OAuthServer($this->authOptions);
+        }
+
+        return $this->OAuthServer;
+    }
+
+    public function getTemporaryCredentials(): TemporaryCredentials|null
+    {
+        if (!$this->TemporaryCredentials)
+            $this->TemporaryCredentials = $this->getOAuthServer()->getTemporaryCredentials();
+
+        return $this->TemporaryCredentials;
+    }
+
+    public function setTemporaryCredentials(TemporaryCredentials $TemporaryCredentials): self
+    {
+        $this->TemporaryCredentials = $TemporaryCredentials;
+        return $this;
+    }
+
+    public function getAuthUrl(array $options = []): string
+    {
+        return $this->getOAuthServer()->getAuthorizationUrl($this->getTemporaryCredentials());
+    }
+
+    public function getAccessToken(string $oAuthToken, string $oAuthVerifier): TokenCredentials
+    {
+        return $this->getOAuthServer()->getTokenCredentials(
+            $this->getTemporaryCredentials(),
+            $oAuthToken,
+            $oAuthVerifier
+        );
     }
 
     /**
@@ -285,7 +448,7 @@ class Client implements ClientInterface
      *
      * @throws BadMethodCallException
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args): ApiInterface
     {
         try {
             return $this->api($name);

@@ -9,14 +9,14 @@ class CardEvent extends AbstractEvent
     /**
      * @var CardInterface
      */
-    protected $card;
+    protected CardInterface $card;
 
     /**
      * Set card
      *
      * @param CardInterface $card
      */
-    public function setCard(CardInterface $card)
+    public function setCard(CardInterface $card): CardInterface
     {
         $this->card = $card;
     }
@@ -26,7 +26,7 @@ class CardEvent extends AbstractEvent
      *
      * @return CardInterface
      */
-    public function getCard()
+    public function getCard(): CardInterface
     {
         return $this->card;
     }

@@ -11,14 +11,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setName($name);
+    public function setName(string $name): self;
 
     /**
      * Get name
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Set description
@@ -27,42 +27,42 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setDescription($desc);
+    public function setDescription(string $desc): self;
 
     /**
      * Get description
      *
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * Get description data
      *
      * @return string
      */
-    public function getDescriptionData();
+    public function getDescriptionData(): string;
 
     /**
      * Get url
      *
      * @return string
      */
-    public function getUrl();
+    public function getUrl(): string;
 
     /**
      * Get short url
      *
      * @return string
      */
-    public function getShortUrl();
+    public function getShortUrl(): string;
 
     /**
      * Get short link
      *
      * @return string
      */
-    public function getShortLink();
+    public function getShortLink(): string;
 
     /**
      * Set organization id
@@ -71,14 +71,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setOrganizationId($organizationId);
+    public function setOrganizationId(string $organizationId): self;
 
     /**
      * Get organization id
      *
      * @return string
      */
-    public function getOrganizationId();
+    public function getOrganizationId(): string;
 
     /**
      * Set organization
@@ -87,21 +87,21 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setOrganization(OrganizationInterface $organization);
+    public function setOrganization(OrganizationInterface $organization): self;
 
     /**
      * Get organization
      *
      * @return OrganizationInterface
      */
-    public function getOrganization();
+    public function getOrganization(): self;
 
     /**
      * Get lists
      *
-     * @return CardlistInterface[]
+     * @return CardListInterface[]
      */
-    public function getLists();
+    public function getLists(): array;
 
     /**
      * Set closed
@@ -110,14 +110,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setClosed($closed);
+    public function setClosed($closed): self;
 
     /**
      * Get closed
      *
      * @return bool
      */
-    public function isClosed();
+    public function isClosed(): bool;
 
     /**
      * Set pinned
@@ -126,14 +126,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setPinned($pinned);
+    public function setPinned($pinned): self;
 
     /**
      * Get pinned
      *
      * @return bool
      */
-    public function isPinned();
+    public function isPinned(): bool;
 
     /**
      * Set starred
@@ -142,14 +142,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setStarred($starred);
+    public function setStarred($starred): self;
 
     /**
      * Get starred
      *
      * @return bool
      */
-    public function isStarred();
+    public function isStarred(): bool;
 
     /**
      * Set subscribed
@@ -158,21 +158,21 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setSubscribed($subscribed);
+    public function setSubscribed($subscribed): self;
 
     /**
      * Get subscribed
      *
      * @return bool
      */
-    public function isSubscribed();
+    public function isSubscribed(): bool;
 
     /**
      * Get invited
      *
      * @return bool
      */
-    public function isInvited();
+    public function isInvited(): bool;
 
     /**
      * Set the role required to invite
@@ -181,14 +181,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setRequiredRoleToInvite($role);
+    public function setRequiredRoleToInvite($role): self;
 
     /**
      * Get the role required to invite
      *
      * @return string
      */
-    public function getRequiredRoleToInvite();
+    public function getRequiredRoleToInvite(): string;
 
     /**
      * Set memberships
@@ -200,14 +200,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setMemberships(array $memberships);
+    public function setMemberships(array $memberships): self;
 
     /**
      * Get memberships
      *
      * @return array
      */
-    public function getMemberships();
+    public function getMemberships(): array;
 
     /**
      * Set prefs
@@ -225,14 +225,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setPreferences(array $prefs);
+    public function setPreferences(array $prefs): self;
 
     /**
      * Get prefs
      *
-     * @return string
+     * @return array
      */
-    public function getPreferences();
+    public function getPreferences(): array;
 
     /**
      * Set label names
@@ -242,14 +242,14 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setLabelNames(array $labelNames);
+    public function setLabelNames(array $labelNames): self;
 
     /**
      * Get label names
      *
      * @return array
      */
-    public function getLabelNames();
+    public function getLabelNames(): array;
 
     /**
      * Set power ups
@@ -258,26 +258,26 @@ interface BoardInterface extends ObjectInterface
      *
      * @return BoardInterface
      */
-    public function setPowerUps(array $powerUps);
+    public function setPowerUps(array $powerUps): self;
 
     /**
      * Get power ups
      *
      * @return array
      */
-    public function getPowerUps();
+    public function getPowerUps(): array;
 
     /**
      * Get date last activity
      *
      * @return \DateTime
      */
-    public function getDateOfLastActivity();
+    public function getDateOfLastActivity(): \DateTime;
 
     /**
      * Get date of last view
      *
      * @return \DateTime
      */
-    public function getDateOfLastView();
+    public function getDateOfLastView(): \DateTime;
 }

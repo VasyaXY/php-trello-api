@@ -12,7 +12,7 @@ use Trello\Api\AbstractApi;
  */
 class Attachments extends AbstractApi
 {
-    protected $path = 'cards/#id#/attachments';
+    protected string $path = 'cards/#id#/attachments';
 
     /**
      * Get attachments related to a given card
@@ -23,7 +23,7 @@ class Attachments extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -37,7 +37,7 @@ class Attachments extends AbstractApi
      *
      * @return array
      */
-    public function create($id, array $params)
+    public function create(string $id, array $params): array
     {
         $atLeastOneOf = ['url', 'file'];
         $this->validateAtLeastOneOf($atLeastOneOf, $params);
@@ -54,7 +54,7 @@ class Attachments extends AbstractApi
      *
      * @return array
      */
-    public function show($id, $attachmentId)
+    public function show(string $id, string $attachmentId): array
     {
         return $this->get($this->getPath($id) . '/' . rawurlencode($attachmentId));
     }
@@ -68,7 +68,7 @@ class Attachments extends AbstractApi
      *
      * @return array
      */
-    public function remove($id, $attachmentId)
+    public function remove(string $id, string $attachmentId): array
     {
         return $this->delete($this->getPath($id) . '/' . rawurlencode($attachmentId));
     }
@@ -82,7 +82,7 @@ class Attachments extends AbstractApi
      *
      * @return array
      */
-    public function setAsCover($id, $attachmentId)
+    public function setAsCover(string $id, string $attachmentId): array
     {
         return $this->put('cards/' . rawurlencode($id) . '/idAttachmentCover', ['value' => $attachmentId]);
     }

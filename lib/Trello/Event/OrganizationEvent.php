@@ -9,14 +9,14 @@ class OrganizationEvent extends AbstractEvent
     /**
      * @var OrganizationInterface
      */
-    protected $organization;
+    protected OrganizationInterface $organization;
 
     /**
      * Set organization
      *
      * @param OrganizationInterface $organization
      */
-    public function setOrganization(OrganizationInterface $organization)
+    public function setOrganization(OrganizationInterface $organization): void
     {
         $this->organization = $organization;
     }
@@ -26,7 +26,7 @@ class OrganizationEvent extends AbstractEvent
      *
      * @return OrganizationInterface
      */
-    public function getOrganization()
+    public function getOrganization(): OrganizationInterface
     {
         return $this->organization;
     }

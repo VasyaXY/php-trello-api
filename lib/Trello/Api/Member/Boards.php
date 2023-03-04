@@ -15,7 +15,7 @@ use Trello\Api\Member\Board\Stars;
  */
 class Boards extends AbstractApi
 {
-    protected $path = 'members/#id#/boards';
+    protected string $path = 'members/#id#/boards';
 
     /**
      * Get boads related to a given member
@@ -26,7 +26,7 @@ class Boards extends AbstractApi
      *
      * @return array
      */
-    public function all($id = "me", array $params = [])
+    public function all(string $id = "me", array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -40,7 +40,7 @@ class Boards extends AbstractApi
      *
      * @return array
      */
-    public function filter($id, $filter = 'all')
+    public function filter(string $id, string|array $filter = 'all'): array
     {
         $allowed = ['all', 'members', 'organization', 'public', 'open', 'closed', 'pinned', 'unpinned', 'starred'];
         $filters = $this->validateAllowedParameters($allowed, $filter, 'filter');
@@ -57,7 +57,7 @@ class Boards extends AbstractApi
      *
      * @return array
      */
-    public function invitedTo($id, array $params = [])
+    public function invitedTo(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id) . 'Invited', $params);
     }
@@ -70,7 +70,7 @@ class Boards extends AbstractApi
      *
      * @return array
      */
-    public function invitedToField($id, $field)
+    public function invitedToField(string $id, string $field): array
     {
         $this->validateAllowedParameters(Board::$fields, $field, 'field');
 
@@ -86,7 +86,7 @@ class Boards extends AbstractApi
      *
      * @return array
      */
-    public function pin($id, $boardId)
+    public function pin(string $id, string $boardId): array
     {
         return $this->post('members/' . rawurlencode($id) . '/idBoardsPinned', ['value' => $boardId]);
     }
@@ -100,7 +100,7 @@ class Boards extends AbstractApi
      *
      * @return array
      */
-    public function unpin($id, $boardId)
+    public function unpin(string $id, string $boardId): array
     {
         return $this->delete('members/' . rawurlencode($id) . '/idBoardsPinned/' . rawurlencode($boardId));
     }
@@ -110,7 +110,7 @@ class Boards extends AbstractApi
      *
      * @return Backgrounds
      */
-    public function backgrounds()
+    public function backgrounds(): Backgrounds
     {
         return new Backgrounds($this->client);
     }
@@ -120,7 +120,7 @@ class Boards extends AbstractApi
      *
      * @return Stars
      */
-    public function stars()
+    public function stars(): Stars
     {
         return new Stars($this->client);
     }

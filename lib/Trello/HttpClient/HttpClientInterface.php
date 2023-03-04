@@ -2,8 +2,9 @@
 
 namespace Trello\HttpClient;
 
+use Psr\Http\Message\ResponseInterface;
 use Trello\Exception\InvalidArgumentException;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 interface HttpClientInterface
 {
@@ -14,9 +15,9 @@ interface HttpClientInterface
      * @param array $parameters GET Parameters
      * @param array $headers Reconfigure the request headers for this call only
      *
-     * @return Response
+     * @return Response|ResponseInterface
      */
-    public function get($path, array $parameters = [], array $headers = []);
+    public function get(string $path, array $parameters = [], array $headers = []): Response|ResponseInterface;
 
     /**
      * Send a POST request
@@ -25,9 +26,9 @@ interface HttpClientInterface
      * @param mixed $body Request body
      * @param array $headers Reconfigure the request headers for this call only
      *
-     * @return Response
+     * @return Response|ResponseInterface
      */
-    public function post($path, $body = null, array $headers = []);
+    public function post(string $path, mixed $body = null, array $headers = []): Response|ResponseInterface;
 
     /**
      * Send a PATCH request
@@ -36,10 +37,10 @@ interface HttpClientInterface
      * @param mixed $body Request body
      * @param array $headers Reconfigure the request headers for this call only
      *
-     * @return Response
+     * @return Response|ResponseInterface
      * @internal param array $parameters Request body
      */
-    public function patch($path, $body = null, array $headers = []);
+    public function patch(string $path, mixed $body = null, array $headers = []): Response|ResponseInterface;
 
     /**
      * Send a PUT request
@@ -48,9 +49,9 @@ interface HttpClientInterface
      * @param mixed $body Request body
      * @param array $headers Reconfigure the request headers for this call only
      *
-     * @return Response
+     * @return Response|ResponseInterface
      */
-    public function put($path, $body, array $headers = []);
+    public function put(string $path, mixed $body, array $headers = []): Response|ResponseInterface;
 
     /**
      * Send a DELETE request
@@ -59,9 +60,9 @@ interface HttpClientInterface
      * @param mixed $body Request body
      * @param array $headers Reconfigure the request headers for this call only
      *
-     * @return Response
+     * @return Response|ResponseInterface
      */
-    public function delete($path, $body = null, array $headers = []);
+    public function delete(string $path, mixed $body = null, array $headers = []): Response|ResponseInterface;
 
     /**
      * Send a request to the server, receive a response,
@@ -72,9 +73,9 @@ interface HttpClientInterface
      * @param array $headers Request headers
      * @param array $options Request options
      *
-     * @return Response
+     * @return Response|ResponseInterface
      */
-    public function request($httpMethod = 'GET', $path = '', array $headers = [], array $options = []);
+    public function request(string $httpMethod = 'GET', string $path = '', array $headers = [], array $options = []): Response|ResponseInterface;
 
     /**
      * Change an option value.
@@ -85,7 +86,7 @@ interface HttpClientInterface
      * @return void
      * @throws InvalidArgumentException
      */
-    public function setOption($name, $value);
+    public function setOption(string $name, mixed $value): void;
 
     /**
      * Set HTTP headers
@@ -94,7 +95,7 @@ interface HttpClientInterface
      *
      * @return void
      */
-    public function setHeaders(array $headers);
+    public function setHeaders(array $headers): void;
 
     /**
      * Authenticate a user for all next requests
@@ -106,5 +107,5 @@ interface HttpClientInterface
      * @return void
      * @throws InvalidArgumentException If no authentication method was given
      */
-    public function authenticate($tokenOrLogin, $password, $authMethod);
+    public function authenticate(string $tokenOrLogin, string|null $password, string|null $authMethod): void;
 }

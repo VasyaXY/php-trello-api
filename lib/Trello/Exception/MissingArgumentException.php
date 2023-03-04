@@ -10,9 +10,9 @@ namespace Trello\Exception;
 class MissingArgumentException extends ErrorException
 {
     /**
-     * @param string $required
+     * @param string|array $required
      */
-    public function __construct($required, $code = 0, $previous = null)
+    public function __construct(string|array $required, int $code = 0, $previous = null)
     {
         if (is_string($required)) {
             $required = [$required];

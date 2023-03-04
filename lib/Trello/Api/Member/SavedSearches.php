@@ -20,5 +20,5 @@ use Trello\Api\AbstractApi;
  */
 class SavedSearches extends AbstractApi
 {
-    protected $path = 'members/#id#/savedSearches';
+    protected string $path = 'members/#id#/savedSearches';
 }

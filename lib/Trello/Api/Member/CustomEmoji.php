@@ -15,5 +15,5 @@ use Trello\Api\AbstractApi;
  */
 class CustomEmoji extends AbstractApi
 {
-    protected $path = 'members/#id#/customEmoji';
+    protected string $path = 'members/#id#/customEmoji';
 }

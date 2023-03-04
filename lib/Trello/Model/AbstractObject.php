@@ -14,22 +14,22 @@ abstract class AbstractObject
     /**
      * @var ClientInterface
      */
-    protected $client;
+    protected ClientInterface $client;
 
     /**
      * @var string
      */
-    protected $apiName;
+    protected string $apiName;
 
     /**
      * @var ApiInterface
      */
-    protected $api;
+    protected ApiInterface $api;
 
     /**
      * @var array
      */
-    protected $fields;
+    protected array $fields;
 
     /**
      * Default load params, should be overwritten
@@ -37,17 +37,17 @@ abstract class AbstractObject
      *
      * @var array
      */
-    protected $loadParams = ['fields' => 'all'];
+    protected array $loadParams = ['fields' => 'all'];
 
     /**
      * @var string
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * Constructor.
@@ -55,7 +55,7 @@ abstract class AbstractObject
      * @param ClientInterface $client the Trello client
      * @param string $id the id of the object
      */
-    public function __construct(ClientInterface $client, $id = null)
+    public function __construct(ClientInterface $client, string $id = null)
     {
         $this->client = $client;
         $this->api = $client->api($this->apiName);
@@ -71,7 +71,7 @@ abstract class AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -79,7 +79,7 @@ abstract class AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function refresh()
+    public function refresh(): self
     {
         $this->preRefresh();
         $this->data = $this->api->show($this->id, $this->loadParams);
@@ -91,7 +91,7 @@ abstract class AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function save()
+    public function save(): self
     {
         try {
             $this->preSave();
@@ -111,7 +111,7 @@ abstract class AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function remove()
+    public function remove(): self
     {
         try {
             $this->preRemove();
@@ -130,7 +130,7 @@ abstract class AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -138,7 +138,7 @@ abstract class AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function setData(array $data)
+    public function setData(array $data): self
     {
         $this->data = $data;
 
@@ -150,7 +150,7 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function update()
+    protected function update(): self
     {
         $this->preUpdate();
         $this->data = $this->api->update($this->id, $this->data);
@@ -164,7 +164,7 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function create()
+    protected function create(): self
     {
         $this->preCreate();
         $this->data = $this->api->create($this->data);

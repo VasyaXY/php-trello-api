@@ -10,13 +10,16 @@ Uses [Trello API v1](https://trello.com/docs/index.html). The object API is very
 * Follows PSR-0 conventions and coding standards: autoload friendly
 * Light and fast thanks to lazy loading of API classes
 * Extensively tested
-* Ready for Symfony 6
+* Tested in Symfony 6.2
 
 ## Requirements
 
-* PHP >= 8.0 with [cURL](http://php.net/manual/en/book.curl.php) extension,
-* [Guzzle](https://github.com/guzzle/guzzle) library,
-* (optional) [PHPUnit](https://phpunit.de) to run tests.
+	"require": {
+		"php": ">=8.0",
+		"symfony/event-dispatcher": "*",
+		"league/oauth1-client": "*",
+		"guzzlehttp/guzzle": "*"
+	},
 
 ## Installation
 
@@ -27,14 +30,56 @@ $ composer require vasyaxy/php-trello-api
 ```
 However, `php-trello-api` follows the PSR-0 naming conventions, which means you can easily integrate `php-trello-api` class loading in your own autoloader.
 
+## Make Auth URL
+
+```php
+<?php
+
+namespace App;
+
+use Trello\Client;
+
+class TrelloApi
+{
+    public Client|null $client;
+
+    public function __construct()
+    {
+        $this->client = new Client();
+    }
+    
+    public function setupTrelloClient(): void
+    {
+        $this->client->authenticate(
+            'API_KEY',                            // Api key - get from https://dashboard.stripe.com/test/apikeys7
+            'USER_TOKEN (empty)',                 // Empty for this exampe
+            Client::AUTH_URL_CLIENT_ID            // nvm
+        );
+    }
+
+    public function getAuthUrl(): string
+    {
+        $this->setupTrelloClient();
+
+        return $this->client->getAuthUrl([
+            'key' => 'API_KEY',                   // Api key - get from https://trello.com/power-ups/admin - NEW - get key
+            'secret' => 'API_SECRET',             // ^^^ "Reveal test key"
+            'callbackUrl' => '!!CALL_BACK_URL!!', // example: 'http://mymegatite.com/trello-hook/'
+            'name' => 'My Mega Trello App!!!1',   // nvm
+            'expiration' => 'never',              // >> MH <<
+            'scope' => 'read,write',              // >> MH <<
+        ]);
+    }
+}
+```
+
 ## Basic usage
 
 ```php
 use Trello\Client;
 
 $client = new Client();
-$client->authenticate('api_key', 'token', Client::AUTH_URL_CLIENT_ID);
-
+$client->authenticate('API_KEY', 'USER_KEY', Client::AUTH_URL_CLIENT_ID);
 $boards = $client->api('member')->boards()->all();
 ```
 
@@ -49,7 +94,7 @@ use Trello\Client;
 use Trello\Manager;
 
 $client = new Client();
-$client->authenticate('api_key', 'token', Client::AUTH_URL_CLIENT_ID);
+$client->authenticate('API_KEY', 'USER_KEY', Client::AUTH_URL_CLIENT_ID);
 
 $manager = new Manager($client);
 
@@ -73,7 +118,7 @@ use Trello\Service;
 use Trello\Events;
 
 $client = new Client();
-$client->authenticate('api_key', 'token', Client::AUTH_URL_CLIENT_ID);
+$client->authenticate('API_KEY', 'USER_KEY', Client::AUTH_URL_CLIENT_ID);
 
 $service = new Service($client);
 

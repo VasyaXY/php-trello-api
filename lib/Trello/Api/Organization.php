@@ -14,14 +14,14 @@ class Organization extends AbstractApi
      * Base path of organizations api
      * @var string
      */
-    protected $path = 'organizations';
+    protected string $path = 'organizations';
 
     /**
      * Organization fields
      * @link https://trello.com/docs/api/organization/#get-1-organizations-idorg-or-name-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'name',
         'displayName',
         'desc',
@@ -49,7 +49,7 @@ class Organization extends AbstractApi
      *
      * @return array
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -59,7 +59,7 @@ class Organization extends AbstractApi
      *
      * @return Organization\Boards
      */
-    public function boards()
+    public function boards(): Organization\Boards
     {
         return new Organization\Boards($this->client);
     }
@@ -69,7 +69,7 @@ class Organization extends AbstractApi
      *
      * @return Organization\Members
      */
-    public function members()
+    public function members(): Organization\Members
     {
         return new Organization\Members($this->client);
     }

@@ -15,14 +15,14 @@ class Webhook extends AbstractApi
      * Base path of webhooks api
      * @var string
      */
-    protected $path = 'webhooks';
+    protected string $path = 'webhooks';
 
     /**
      * Webhook fields
      * @link https://trello.com/docs/api/webhook/#get-1-webhooks-idwebhook-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'description',
         'idModel',
         'callbackURL',
@@ -38,7 +38,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -51,7 +51,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function create(array $params = [])
+    public function create(array $params = []): array
     {
         $this->validateRequiredParameters(['callbackURL', 'idModel'], $params);
 
@@ -67,7 +67,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
         $this->validateRequiredParameters(['callbackURL', 'idModel'], $params);
 
@@ -82,7 +82,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function remove($id)
+    public function remove(string $id): array
     {
         return $this->delete($this->getPath() . '/' . rawurlencode($id));
     }
@@ -96,7 +96,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function setCallbackUrl($id, $url)
+    public function setCallbackUrl(string $id, string $url): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/callbackUrl', ['value' => $url]);
     }
@@ -110,7 +110,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function setDescription($id, $description)
+    public function setDescription(string $id, string $description): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/description', ['value' => $description]);
     }
@@ -124,7 +124,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function setModel($id, $modelId)
+    public function setModel(string $id, string $modelId): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/idModel', ['value' => $modelId]);
     }
@@ -138,7 +138,7 @@ class Webhook extends AbstractApi
      *
      * @return array
      */
-    public function setActive($id, $active)
+    public function setActive(string $id, bool $active): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/active', ['value' => $active]);
     }

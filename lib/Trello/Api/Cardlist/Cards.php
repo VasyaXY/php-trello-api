@@ -12,7 +12,7 @@ use Trello\Api\AbstractApi;
  */
 class Cards extends AbstractApi
 {
-    protected $path = 'lists/#id#/cards';
+    protected string $path = 'lists/#id#/cards';
 
     /**
      * Get cards related to a given list
@@ -23,7 +23,7 @@ class Cards extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -33,11 +33,11 @@ class Cards extends AbstractApi
      * @link https://trello.com/docs/api/list/#get-1-lists-idlist-cards-filter
      *
      * @param string $id the list's id
-     * @param array $filter one of 'none', 'open', 'closed', 'all'
+     * @param string $filter one of 'none', 'open', 'closed', 'all'
      *
      * @return array
      */
-    public function filter($id, $filter = 'all')
+    public function filter(string $id, string $filter = 'all'): array
     {
         $allowed = ['none', 'open', 'closed', 'all'];
         $filters = $this->validateAllowedParameters($allowed, $filter, 'filter');
@@ -53,7 +53,7 @@ class Cards extends AbstractApi
      *
      * @return array card info
      */
-    public function create($id, $name, array $params = [])
+    public function create(string $id, string $name, array $params = []): array
     {
         $params['idList'] = $id;
         $params['name'] = $name;
@@ -73,7 +73,7 @@ class Cards extends AbstractApi
      *
      * @return array
      */
-    public function archiveAll($id)
+    public function archiveAll(string $id): array
     {
         return $this->post('lists/' . rawurlencode($id) . '/archiveAllCards');
     }
@@ -88,7 +88,7 @@ class Cards extends AbstractApi
      *
      * @return array
      */
-    public function moveAll($id, $boardId, $destListId)
+    public function moveAll(string $id, string $boardId, string $destListId): array
     {
         $data = [
             'idBoard' => $boardId,

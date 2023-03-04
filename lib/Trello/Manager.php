@@ -2,19 +2,23 @@
 
 namespace Trello;
 
+use Trello\Model\Action;
+use Trello\Model\BoardInterface;
+use Trello\Model\CardInterface;
+use Trello\Model\CardListInterface;
+use Trello\Model\CheckListInterface;
+use Trello\Model\MemberInterface;
+use Trello\Model\TokenInterface;
+use Trello\Model\WebhookInterface;
+
 class Manager
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
-
     /**
      * Constructor.
      *
      * @param ClientInterface $client
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(protected ClientInterface $client)
     {
         $this->client = $client;
     }
@@ -26,7 +30,7 @@ class Manager
      *
      * @return Model\OrganizationInterface
      */
-    public function getOrganization($id = null)
+    public function getOrganization(string $id = null)
     {
         return new Model\Organization($this->client, $id);
     }
@@ -38,7 +42,7 @@ class Manager
      *
      * @return Model\BoardInterface
      */
-    public function getBoard($id = null)
+    public function getBoard(string $id = null): BoardInterface
     {
         return new Model\Board($this->client, $id);
     }
@@ -48,11 +52,11 @@ class Manager
      *
      * @param string $id the cardlist's id
      *
-     * @return Model\CardlistInterface
+     * @return Model\CardListInterface
      */
-    public function getList($id = null)
+    public function getList(string $id = null): CardListInterface
     {
-        return new Model\Cardlist($this->client, $id);
+        return new Model\CardList($this->client, $id);
     }
 
     /**
@@ -62,7 +66,7 @@ class Manager
      *
      * @return Model\CardInterface
      */
-    public function getCard($id = null)
+    public function getCard(string $id = null): CardInterface
     {
         return new Model\Card($this->client, $id);
     }
@@ -72,11 +76,11 @@ class Manager
      *
      * @param string $id the checklist's id
      *
-     * @return Model\ChecklistInterface
+     * @return Model\CheckListInterface
      */
-    public function getChecklist($id = null)
+    public function getChecklist(string $id = null): CheckListInterface
     {
-        return new Model\Checklist($this->client, $id);
+        return new Model\CheckList($this->client, $id);
     }
 
     /**
@@ -86,7 +90,7 @@ class Manager
      *
      * @return Model\MemberInterface
      */
-    public function getMember($id = null)
+    public function getMember(string $id = null): MemberInterface
     {
         return new Model\Member($this->client, $id);
     }
@@ -98,7 +102,7 @@ class Manager
      *
      * @return Model\ActionInterface
      */
-    public function getAction($id)
+    public function getAction(string $id): Action
     {
         return new Model\Action($this->client, $id);
     }
@@ -110,7 +114,7 @@ class Manager
      *
      * @return Model\TokenInterface
      */
-    public function getToken($id)
+    public function getToken(string $id): TokenInterface
     {
         return new Model\Token($this->client, $id);
     }
@@ -122,7 +126,7 @@ class Manager
      *
      * @return Model\WebhookInterface
      */
-    public function getWebhook($id)
+    public function getWebhook(string $id): WebhookInterface
     {
         return new Model\Webhook($this->client, $id);
     }

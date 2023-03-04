@@ -12,9 +12,9 @@ use Trello\Api\AbstractApi;
  */
 class Items extends AbstractApi
 {
-    protected $path = 'checklists/#id#/checkItems';
+    protected string $path = 'checklists/#id#/checkItems';
 
-    public static $fields = [
+    public static array $fields = [
         'name',
         'nameData',
         'type',
@@ -31,7 +31,7 @@ class Items extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -46,9 +46,9 @@ class Items extends AbstractApi
      *
      * @return array
      */
-    public function getItem($id, $itemId, array $params = [])
+    public function getItem(string $id, string $itemId, array $params = []): array
     {
-        return $this->get($this->getPath($id).'/'.$itemId, $params);
+        return $this->get($this->getPath($id) . '/' . $itemId, $params);
     }
 
     /**
@@ -62,7 +62,7 @@ class Items extends AbstractApi
      *
      * @return array
      */
-    public function create($id, $name, $checked = false, array $data = [])
+    public function create(string $id, string $name, bool $checked = false, array $data = []): array
     {
         $data['checked'] = $checked;
         $data['name'] = $name;
@@ -84,18 +84,18 @@ class Items extends AbstractApi
      *
      * @return array
      */
-    public function update($id, $itemId, array $data)
-    {	
-		$item = $this->getItem($id, $itemId);
-		if(!isset($data['pos'])) {
-			$data['pos'] = $item['pos'];
-		}
-		if(!isset($data['name']) || $data['name'] == '') {
-			$data['name'] = $item['name'];
-		}
-		if(!isset($data['state'])) {
-			$data['state'] = $item['state'] == 'complete' ? true : false;
-		}
+    public function update(string $id, string $itemId, array $data): array
+    {
+        $item = $this->getItem($id, $itemId);
+        if (!isset($data['pos'])) {
+            $data['pos'] = $item['pos'];
+        }
+        if (!isset($data['name']) || $data['name'] == '') {
+            $data['name'] = $item['name'];
+        }
+        if (!isset($data['state'])) {
+            $data['state'] = $item['state'] == 'complete' ? true : false;
+        }
 
         $this->remove($id, $itemId);
 
@@ -111,7 +111,7 @@ class Items extends AbstractApi
      *
      * @return array card info
      */
-    public function remove($id, $itemId)
+    public function remove(string $id, string $itemId): array
     {
         return $this->delete($this->getPath($id) . '/' . rawurlencode($itemId));
     }

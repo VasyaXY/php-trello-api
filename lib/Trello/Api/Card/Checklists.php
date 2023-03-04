@@ -13,7 +13,7 @@ use Trello\Exception\MissingArgumentException;
  */
 class Checklists extends AbstractApi
 {
-    protected $path = 'cards/#id#/checklists';
+    protected string $path = 'cards/#id#/checklists';
 
     /**
      * Get checklists related to a given card
@@ -24,7 +24,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get('cards/' . rawurlencode($id) . '/checklists', $params);
     }
@@ -44,7 +44,7 @@ class Checklists extends AbstractApi
      * @throws MissingArgumentException If there is not at least of the
      *                                  following parameters: 'value', 'name', 'idChecklistSource'
      */
-    public function create($id, array $params)
+    public function create(string $id, array $params): array
     {
         $atLeastOneOf = ['value', 'name', 'idChecklistSource'];
         $this->validateAtLeastOneOf($atLeastOneOf, $params);
@@ -61,7 +61,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function remove($id, $checklistId)
+    public function remove(string $id, string $checklistId): array
     {
         return $this->delete($this->getPath($id) . '/' . rawurlencode($checklistId));
     }
@@ -74,7 +74,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function itemStates($id, array $params = [])
+    public function itemStates(string $id, array $params = []): array
     {
         return $this->get('cards/' . rawurlencode($id) . '/checkItemStates', $params);
     }
@@ -90,7 +90,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function updateItem($id, $checklistId, $checkItemId, array $data)
+    public function updateItem(string $id, string $checklistId, string $checkItemId, array $data): array
     {
         return $this->put(
             $this->getPath($id) . '/' . rawurlencode($checklistId) . '/checkItem/' . rawurlencode($checkItemId),
@@ -109,7 +109,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function createItem($id, $checklistId, $name, array $data = [])
+    public function createItem(string $id, string $checklistId, string $name, array $data = []): array
     {
         $data['idChecklist'] = $checklistId;
         $data['name'] = $name;
@@ -127,7 +127,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function convertItemToCard($id, $checklistId, $checkItemId)
+    public function convertItemToCard(string $id, string $checklistId, string $checkItemId): array
     {
         return $this->post(
             $this->getPath($id) . '/' . rawurlencode($checklistId) . '/checkItem/' . rawurlencode($checkItemId) . '/convertToCard'
@@ -144,7 +144,7 @@ class Checklists extends AbstractApi
      *
      * @return array
      */
-    public function removeItem($id, $checklistId, $checkItemId)
+    public function removeItem(string $id, string $checklistId, string $checkItemId): array
     {
         return $this->delete(
             $this->getPath($id) . '/' . rawurlencode($checklistId) . '/checkItem/' . rawurlencode($checkItemId)

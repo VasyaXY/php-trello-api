@@ -9,14 +9,14 @@ class MemberEvent extends AbstractEvent
     /**
      * @var MemberInterface
      */
-    protected $member;
+    protected MemberInterface $member;
 
     /**
      * Set member
      *
      * @param MemberInterface $member
      */
-    public function setMember(MemberInterface $member)
+    public function setMember(MemberInterface $member): void
     {
         $this->member = $member;
     }
@@ -26,7 +26,7 @@ class MemberEvent extends AbstractEvent
      *
      * @return MemberInterface
      */
-    public function getMember()
+    public function getMember(): MemberInterface
     {
         return $this->member;
     }

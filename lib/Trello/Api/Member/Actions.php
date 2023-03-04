@@ -12,7 +12,7 @@ use Trello\Api\AbstractApi;
  */
 class Actions extends AbstractApi
 {
-    protected $path = 'members/#id#/actions';
+    protected string $path = 'members/#id#/actions';
 
     /**
      * Get actions related to a given member
@@ -23,7 +23,7 @@ class Actions extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }

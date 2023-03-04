@@ -2,14 +2,14 @@
 
 namespace Trello\Model;
 
-interface ChecklistInterface extends ObjectInterface
+interface CheckListInterface extends ObjectInterface
 {
     /**
      * Set name
      *
      * @param string $name
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setName($name);
 
@@ -25,7 +25,7 @@ interface ChecklistInterface extends ObjectInterface
      *
      * @param string $boardId
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setBoardId($boardId);
 
@@ -41,7 +41,7 @@ interface ChecklistInterface extends ObjectInterface
      *
      * @param BoardInterface $board
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setBoard(BoardInterface $board);
 
@@ -57,7 +57,7 @@ interface ChecklistInterface extends ObjectInterface
      *
      * @param string $cardId
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setCardId($cardId);
 
@@ -73,7 +73,7 @@ interface ChecklistInterface extends ObjectInterface
      *
      * @param CardInterface $card [description]
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setCard(CardInterface $card);
 
@@ -89,7 +89,7 @@ interface ChecklistInterface extends ObjectInterface
      *
      * @param string $pos
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setPosition($pos);
 
@@ -118,7 +118,7 @@ interface ChecklistInterface extends ObjectInterface
      * @param bool $checked whether it should be marked as completed or not
      * @param integer $position position on the list
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function setItem($name, $checked = null, $position = null);
 

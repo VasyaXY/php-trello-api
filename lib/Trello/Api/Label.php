@@ -14,13 +14,13 @@ class Label extends AbstractApi
      * Base path of labels api
      * @var string
      */
-    protected $path = 'labels';
+    protected string $path = 'labels';
 
     /**
      * Label fields
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'name',
         'color',
         'idBoard'
@@ -30,7 +30,7 @@ class Label extends AbstractApi
      * Label colors
      * @var array
      */
-    public static $colors = [
+    public static array $colors = [
 		'yellow', 
 		'purple', 
 		'blue', 
@@ -52,7 +52,7 @@ class Label extends AbstractApi
      *
      * @return array label info
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -65,7 +65,7 @@ class Label extends AbstractApi
      *
      * @return array label info
      */
-    public function create(array $params = [])
+    public function create(array $params = []): array
     {
         $this->validateRequiredParameters(['idBoard', 'name'], $params);
 		
@@ -85,7 +85,7 @@ class Label extends AbstractApi
      *
      * @return array card info
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
 		return $this->put($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -99,7 +99,7 @@ class Label extends AbstractApi
      *
      * @return array label info
      */
-    public function setColor($id, $color)
+    public function setColor(string $id, string $color): array
     {
         $this->validateAllowedParameters(Label::$colors, $color, 'color');
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/color', ['value' => $color]);
@@ -114,7 +114,7 @@ class Label extends AbstractApi
      *
      * @return array label info
      */
-    public function setName($id, $name)
+    public function setName(string $id, string $name): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/name', ['value' => $name]);
     }

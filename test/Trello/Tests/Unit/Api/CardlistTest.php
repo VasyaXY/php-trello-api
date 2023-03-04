@@ -236,6 +236,6 @@ class CardlistTest extends TestCase
 
     protected function getApiClass()
     {
-        return 'Trello\Api\Cardlist';
+        return 'Trello\Api\CardList';
     }
 }

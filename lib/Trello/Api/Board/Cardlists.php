@@ -16,7 +16,7 @@ class Cardlists extends AbstractApi
      * Base path of board lists api
      * @var string
      */
-    protected $path = 'boards/#id#/lists';
+    protected string $path = 'boards/#id#/lists';
 
     /**
      * Get a given board's lists
@@ -27,7 +27,7 @@ class Cardlists extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -41,7 +41,7 @@ class Cardlists extends AbstractApi
      *
      * @return array
      */
-    public function filter($id, $filter = 'all')
+    public function filter(string $id, string|array $filter = 'all'): array
     {
         $allowed = ['all', 'none', 'open', 'closed'];
         $filter = $this->validateAllowedParameters($allowed, $filter, 'filter');
@@ -57,7 +57,7 @@ class Cardlists extends AbstractApi
      *
      * @return array
      */
-    public function create($id, array $params = [])
+    public function create(string $id, array $params = []): array
     {
         $this->validateRequiredParameters(['name'], $params);
 

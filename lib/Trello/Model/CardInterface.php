@@ -218,16 +218,16 @@ interface CardInterface extends ObjectInterface
     /**
      * Set list
      *
-     * @param CardlistInterface $list
+     * @param CardListInterface $list
      *
      * @return CardInterface
      */
-    public function setList(CardlistInterface $list);
+    public function setList(CardListInterface $list);
 
     /**
      * Get list
      *
-     * @return CardlistInterface
+     * @return CardListInterface
      */
     public function getList();
 
@@ -250,7 +250,7 @@ interface CardInterface extends ObjectInterface
     /**
      * Set checklists
      *
-     * @param array|ChecklistInterface[] $checklists
+     * @param array|CheckListInterface[] $checklists
      *
      * @return CardInterface
      */
@@ -259,21 +259,21 @@ interface CardInterface extends ObjectInterface
     /**
      * Get checklists
      *
-     * @return array|ChecklistInterface[]
+     * @return array|CheckListInterface[]
      */
     public function getChecklists();
 
     /**
      * Get checklist by name
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
     public function getChecklist($name);
 
     /**
      * Has checklist?
      *
-     * @param ChecklistInterface|string $checklistOrName
+     * @param CheckListInterface|string $checklistOrName
      *
      * @return bool
      */
@@ -282,7 +282,7 @@ interface CardInterface extends ObjectInterface
     /**
      * Add checklist to card
      *
-     * @param ChecklistInterface|string $checklistOrName
+     * @param CheckListInterface|string $checklistOrName
      *
      * @return CardInterface
      */
@@ -295,7 +295,7 @@ interface CardInterface extends ObjectInterface
      * without actually deleting it. Call ChecklistInterface::remove()
      * to removed it completely.
      *
-     * @param ChecklistInterface|string $checklistOrName
+     * @param CheckListInterface|string $checklistOrName
      *
      * @return CardInterface
      */

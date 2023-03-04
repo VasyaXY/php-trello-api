@@ -16,5 +16,5 @@ class Members extends BoardMembers
      * Base path of organization members api
      * @var string
      */
-    protected $path = 'organizations/#id#/members';
+    protected string $path = 'organizations/#id#/members';
 }

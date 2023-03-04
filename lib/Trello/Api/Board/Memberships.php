@@ -19,5 +19,5 @@ class Memberships extends AbstractApi
      * Base path of board power ups api
      * @var string
      */
-    protected $path = 'boards/#id#/memberships';
+    protected string $path = 'boards/#id#/memberships';
 }

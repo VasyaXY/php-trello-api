@@ -13,7 +13,7 @@ class Service extends Manager
     /**
      * @var EventDispatcherInterface
      */
-    protected $dispatcher;
+    protected EventDispatcherInterface $dispatcher;
 
     /**
      * Constructor.

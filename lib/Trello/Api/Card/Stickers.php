@@ -12,7 +12,7 @@ use Trello\Api\AbstractApi;
  */
 class Stickers extends AbstractApi
 {
-    protected $path = 'cards/#id#/stickers';
+    protected string $path = 'cards/#id#/stickers';
 
     /**
      * Get stickers related to a given card
@@ -23,7 +23,7 @@ class Stickers extends AbstractApi
      *
      * @return array
      */
-    public function all($id, array $params = [])
+    public function all(string $id, array $params = []): array
     {
         return $this->get($this->getPath($id), $params);
     }
@@ -46,7 +46,7 @@ class Stickers extends AbstractApi
      *
      * @return array
      */
-    public function show($id, $stickerId, $fields = 'all')
+    public function show(string $id, string $stickerId, string|array $fields = 'all'): array
     {
         $allowed = ['all', 'image', 'imageScaled', 'imageUrl', 'left', 'rotate', 'top', 'zIndex'];
         $fields = $this->validateAllowedParameters($allowed, $fields, 'field');
@@ -68,7 +68,7 @@ class Stickers extends AbstractApi
      *
      * @return array
      */
-    public function update($id, $stickerId, array $params)
+    public function update(string $id, string $stickerId, array $params): array
     {
         $oneOf = ['left', 'rotate', 'top', 'zIndex'];
         $this->validateAtLeastOneOf($oneOf, $params);
@@ -90,7 +90,7 @@ class Stickers extends AbstractApi
      *
      * @return array
      */
-    public function create($id, array $params)
+    public function create(string $id, array $params): array
     {
         $required = ['image', 'left', 'top', 'zIndex'];
         $this->validateRequiredParameters($required, $params);
@@ -107,7 +107,7 @@ class Stickers extends AbstractApi
      *
      * @return array
      */
-    public function remove($id, $stickerId)
+    public function remove(string $id, string $stickerId): array
     {
         return $this->delete($this->getPath($id) . '/' . rawurlencode($stickerId));
     }

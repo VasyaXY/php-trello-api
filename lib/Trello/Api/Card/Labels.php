@@ -14,7 +14,7 @@ use Trello\Api\Label;
  */
 class Labels extends AbstractApi
 {
-    protected $path = 'cards/#id#';
+    protected string $path = 'cards/#id#';
 
     /**
      * Set a given card's labels
@@ -27,7 +27,7 @@ class Labels extends AbstractApi
      *
      * @throws InvalidArgumentException If a label does not exist
      */
-    public function set($id, array $labels)
+    public function set(string $id, array $labels): array
     {
         foreach ($labels as $label) {
             if (!in_array($label, Label::$colors)) {
@@ -37,7 +37,7 @@ class Labels extends AbstractApi
 
         $labels = implode(',', $labels);
 
-        return $this->put($this->getPath($id).'/labels', ['value' => $labels]);
+        return $this->put($this->getPath($id) . '/labels', ['value' => $labels]);
     }
 
     /**
@@ -51,17 +51,17 @@ class Labels extends AbstractApi
      *
      * @throws InvalidArgumentException If a label does not exist
      */
-    public function create($id, array $params = [])
-    {		
-		if ((isset($params['color']) && !empty($params['color'])) && !in_array($params['color'], Label::$colors)) {
-			throw new InvalidArgumentException(sprintf('Wrong label color "%s". Allowed: '.implode(', ', Label::$colors), $label));
-		}
+    public function create(string $id, array $params = []): array
+    {
+        if ((isset($params['color']) && !empty($params['color'])) && !in_array($params['color'], Label::$colors)) {
+            throw new InvalidArgumentException(sprintf('Wrong label color "%s". Allowed: ' . implode(', ', Label::$colors), $label));
+        }
 
-        $labels = implode(',', $labels);
+//        $labels = implode(',', $labels);
 
-        return $this->post($this->getPath($id).'/labels', $params);
+        return $this->post($this->getPath($id) . '/labels', $params);
     }
-	
+
     /**
      * Add a given card's label
      * @link https://developer.atlassian.com/cloud/trello/rest/api-group-cards/#api-cards-id-idlabels-post
@@ -73,9 +73,9 @@ class Labels extends AbstractApi
      *
      * @throws InvalidArgumentException If a label does not exist
      */
-    public function attach($id, $labelId)
+    public function attach(string $id, string $labelId): array
     {
-        return $this->post($this->getPath($id).'/idLabels', ['value' => $labelId]);
+        return $this->post($this->getPath($id) . '/idLabels', ['value' => $labelId]);
     }
 
     /**
@@ -89,13 +89,13 @@ class Labels extends AbstractApi
      *
      * @throws InvalidArgumentException If a label does not exist
      */
-    public function remove($id, $label)
+    public function remove(string $id, string $label): array
     {
         if (!in_array($label, Label::$colors)) {
             throw new InvalidArgumentException(sprintf('Label "%s" does not exist.', $label));
         }
 
-        return $this->delete($this->getPath($id) .'/labels/' . rawurlencode($label));
+        return $this->delete($this->getPath($id) . '/labels/' . rawurlencode($label));
     }
 
     /**
@@ -109,7 +109,7 @@ class Labels extends AbstractApi
      *
      * @throws InvalidArgumentException If a label does not exist
      */
-    public function detach($id, $labelId)
+    public function detach(string $id, string $labelId): array
     {
         return $this->delete($this->getPath($id) . '/idLabels/' . rawurlencode($labelId));
     }

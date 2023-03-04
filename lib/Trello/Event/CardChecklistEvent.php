@@ -2,21 +2,21 @@
 
 namespace Trello\Event;
 
-use Trello\Model\ChecklistInterface;
+use Trello\Model\CheckListInterface;
 
 class CardChecklistEvent extends CardEvent
 {
     /**
-     * @var ChecklistInterface
+     * @var CheckListInterface
      */
-    protected $checklist;
+    protected CheckListInterface $checklist;
 
     /**
      * Set checklist
      *
-     * @param ChecklistInterface $checklist
+     * @param CheckListInterface $checklist
      */
-    public function setChecklist(ChecklistInterface $checklist)
+    public function setChecklist(CheckListInterface $checklist): void
     {
         $this->checklist = $checklist;
     }
@@ -24,9 +24,9 @@ class CardChecklistEvent extends CardEvent
     /**
      * Get checklist
      *
-     * @return ChecklistInterface
+     * @return CheckListInterface
      */
-    public function getChecklist()
+    public function getChecklist(): CheckListInterface
     {
         return $this->checklist;
     }

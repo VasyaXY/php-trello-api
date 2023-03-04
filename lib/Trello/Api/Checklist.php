@@ -2,6 +2,8 @@
 
 namespace Trello\Api;
 
+use Trello\Api\Checklist\Cards;
+use Trello\Api\Checklist\Items;
 use Trello\Exception\InvalidArgumentException;
 
 /**
@@ -16,14 +18,14 @@ class Checklist extends AbstractApi
      * Base path of checklists api
      * @var string
      */
-    protected $path = 'checklists';
+    protected string $path = 'checklists';
 
     /**
      * Card fields
      * @link https://trello.com/docs/api/list/#get-1-lists-list-id-or-shortlink-field
      * @var array
      */
-    public static $fields = [
+    public static array $fields = [
         'name',
         'idBoard',
         'idCard',
@@ -39,7 +41,7 @@ class Checklist extends AbstractApi
      *
      * @return array list info
      */
-    public function show($id, array $params = [])
+    public function show(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -52,7 +54,7 @@ class Checklist extends AbstractApi
      *
      * @return array
      */
-    public function create(array $params = [])
+    public function create(array $params = []): array
     {
         $this->validateRequiredParameters(['name', 'idCard'], $params);
 
@@ -68,7 +70,7 @@ class Checklist extends AbstractApi
      *
      * @return array list info
      */
-    public function update($id, array $params = [])
+    public function update(string $id, array $params = []): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id), $params);
     }
@@ -81,7 +83,7 @@ class Checklist extends AbstractApi
      *
      * @return array
      */
-    public function remove($id)
+    public function remove(string $id): array
     {
         return $this->delete($this->getPath() . '/' . rawurlencode($id));
     }
@@ -95,7 +97,7 @@ class Checklist extends AbstractApi
      *
      * @return array board info
      */
-    public function getBoard($id, array $params = [])
+    public function getBoard(string $id, array $params = []): array
     {
         return $this->get($this->getPath() . '/' . rawurlencode($id) . '/board', $params);
     }
@@ -111,7 +113,7 @@ class Checklist extends AbstractApi
      *
      * @throws InvalidArgumentException if the field does not exist
      */
-    public function getBoardField($id, $field)
+    public function getBoardField(string $id, array $field): array
     {
         $this->validateAllowedParameters(Board::$fields, $field, 'field');
 
@@ -127,7 +129,7 @@ class Checklist extends AbstractApi
      *
      * @return array
      */
-    public function setCard($id, $cardId)
+    public function setCard(string $id, string $cardId): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/idCard', ['value' => $cardId]);
     }
@@ -141,7 +143,7 @@ class Checklist extends AbstractApi
      *
      * @return array
      */
-    public function setName($id, $name)
+    public function setName(string $id, string $name): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/name', ['value' => $name]);
     }
@@ -156,7 +158,7 @@ class Checklist extends AbstractApi
      *
      * @return array list info
      */
-    public function setPosition($id, $position)
+    public function setPosition(string $id, string|int $position): array
     {
         return $this->put($this->getPath() . '/' . rawurlencode($id) . '/pos', ['value' => $position]);
     }
@@ -166,7 +168,7 @@ class Checklist extends AbstractApi
      *
      * @return Checklist\Cards
      */
-    public function cards()
+    public function cards(): Cards
     {
         return new Checklist\Cards($this->client);
     }
@@ -176,7 +178,7 @@ class Checklist extends AbstractApi
      *
      * @return Checklist\Items
      */
-    public function items()
+    public function items(): Items
     {
         return new Checklist\Items($this->client);
     }

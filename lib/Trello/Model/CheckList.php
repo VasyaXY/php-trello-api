@@ -8,17 +8,17 @@ use Trello\ClientInterface;
 /**
  * @codeCoverageIgnore
  */
-class Checklist extends AbstractObject implements ChecklistInterface
+class CheckList extends AbstractObject implements CheckListInterface
 {
-    protected $apiName = 'checklist';
+    protected string $apiName = 'checklist';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'fields' => 'all',
         'checkItems' => 'all',
         'checkItem_fields' => 'all',
     ];
 
-    protected $itemsToBeRemoved = [];
+    protected array $itemsToBeRemoved = [];
 
     public function __construct(ClientInterface $client, $id = null)
     {

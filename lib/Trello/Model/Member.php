@@ -9,9 +9,9 @@ use Trello\Exception\InvalidArgumentException;
  */
 class Member extends AbstractObject implements MemberInterface
 {
-    protected $apiName = 'member';
+    protected string $apiName = 'member';
 
-    protected $loadParams = [
+    protected array $loadParams = [
         'fields' => 'all',
     ];
 
