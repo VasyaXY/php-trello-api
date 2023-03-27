@@ -15,6 +15,7 @@ use Trello\Api\Label;
 use Trello\Api\Member;
 use Trello\Api\Notification;
 use Trello\Api\Organization;
+use Trello\Api\SearchMembers;
 use Trello\Api\Token;
 use Trello\Api\Webhook;
 use Trello\Exception\BadMethodCallException;
@@ -231,6 +232,11 @@ class Client implements ClientInterface
     public function apiLabel(): Label
     {
         return new Api\Label($this);
+    }
+
+    public function apiSearch(): SearchMembers
+    {
+        return new Api\SearchMembers($this);
     }
 
     /**
