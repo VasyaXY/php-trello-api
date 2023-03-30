@@ -112,6 +112,35 @@ class Members extends AbstractApi
     }
 
     /**
+     * Add member to a given board
+     * @link https://trello.com/docs/api/board/#put-1-boards-board-id-members
+     *
+     * @param string $idBoard the board's id
+     * @param string $idMember the member's id
+     * @param string $role one of 'normal', 'observer' or 'admin'
+     *
+     * @return array
+     */
+    public function addMember(string $idBoard, string $idMember, string $inviteText = '', string $role = 'normal'): array
+    {
+        $roles = ['normal', 'observer', 'admin'];
+
+        if (!in_array($role, $roles)) {
+            throw new InvalidArgumentException(sprintf(
+                'The "role" parameter must be one of "%s".',
+                implode(", ", $roles)
+            ));
+        }
+
+        $params = [
+            'type' => $role,
+            'invitationMessage' => $inviteText
+        ];
+
+        return $this->put($this->getPath($idBoard) . '/' . rawurlencode($idMember) . '/', $params);
+    }
+
+    /**
      * Get members invited to a given board
      * @link https://trello.com/docs/api/board/#get-1-boards-board-id-membersinvited
      *
